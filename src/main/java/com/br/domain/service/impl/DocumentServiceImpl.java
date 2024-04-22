@@ -34,21 +34,21 @@ public class DocumentServiceImpl implements DocumentService{
 		return null;
 	}
 
-	@Override
-	public Document deactivateUser(Long id) {
-		Document document = documentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
-		document.setActive(false);
-        return documentRepository.save(document);
-	}
-
-	@Override
-	public Document activateUser(Long id) {
-		Document document = documentRepository.findById(id)
-			.orElseThrow(() -> new RuntimeException("Documento não encontrado!"));
-		document.setActive(true);
-		return documentRepository.save(document);
-	}
+//	@Override
+//	public Document deactivateUser(Long id) {
+//		Document document = documentRepository.findById(id)
+//                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+//		document.setActive(false);
+//        return documentRepository.save(document);
+//	}
+//
+//	@Override
+//	public Document activateUser(Long id) {
+//		Document document = documentRepository.findById(id)
+//			.orElseThrow(() -> new RuntimeException("Documento não encontrado!"));
+//		document.setActive(true);
+//		return documentRepository.save(document);
+//	}
 	
 	
 }

@@ -31,7 +31,6 @@ import io.swagger.annotations.ApiResponses;
 @RequestMapping("/v1/documento")
 public class DocumentController {
 
-
 	@Autowired
 	private DocumentService documentService;
 	

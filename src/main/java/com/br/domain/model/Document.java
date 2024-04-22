@@ -1,20 +1,18 @@
 package com.br.domain.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Getter
 @Setter
-@Table(name = "TBL_DOCUMENTO")
+@Table(name = "TBL_DOCUMENT")
 @Entity
 public class Document {
 
@@ -22,41 +20,27 @@ public class Document {
 	@GeneratedValue( strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	private Boolean active;
+	@NotNull
+	@NotBlank
+	@OneToOne
+	@JoinColumn(name = "model_id", unique = true)
+	private Model model;
 	
 	@NotNull
 	@NotBlank
-	@Column(name = "modelo")
-	private String modelo;
+	@Column(name = "subscritor")
+	private Long subscritor;
 	
 	@NotNull
 	@NotBlank
-	@Column(name = "meustextosPadroes")
-	private String meustextosPadroes;
-	
-	@NotNull
-	@NotBlank
-	@Column(name = "responsavelPelaAssinatura")
-	private String responsavelPelaAssinatura;
-	
-	@NotNull
-	@NotBlank
-	@Column(name = "nomeCompleto")
-	private String nomeCompleto;
-	
-	@NotNull
-	@NotBlank
-	@Column(name = "interessado")
-	private String interessado;
-	
-	@NotNull
-	@NotBlank
-	@Column(name = "assunto")
-	private String assunto;
-	
-	@NotNull
-	@NotBlank
-	@Column(name = "numeroDeReferencia")
-	private String numeroDeReferencia;
+	@Column(name = "descricao")
+	private String descricao;
+
+	@OneToOne
+	@JoinColumn(name = "mobil_id", unique = true)
+	private Mobil mobil;
+
+	@Column(name = "file")
+	private String file;
 	
 }
