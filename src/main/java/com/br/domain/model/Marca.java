@@ -1,7 +1,6 @@
 package com.br.domain.model;
 
 import lombok.*;
-
 import javax.persistence.*;
 
 @Getter

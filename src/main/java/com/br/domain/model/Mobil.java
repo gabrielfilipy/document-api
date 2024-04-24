@@ -22,7 +22,7 @@ public class Mobil {
 
     @OneToMany(mappedBy = "mobil", fetch = FetchType.LAZY )
     private Set<Movimentacao> movimentacoes = new HashSet<>();
-
+ 
     @OneToMany(mappedBy = "mobil", fetch = FetchType.LAZY )
     private Set<Marca> marcas = new HashSet<>();
 

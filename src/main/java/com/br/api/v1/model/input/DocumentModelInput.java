@@ -14,4 +14,5 @@ public class DocumentModelInput {
 	private String interessado;
 	private String assunto;
 	private String numeroDeReferencia;
+	
 }

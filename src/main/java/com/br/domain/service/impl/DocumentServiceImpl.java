@@ -5,7 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.br.domain.exception.EntidadeNaoExisteException;
 import com.br.domain.model.Document;
+import com.br.domain.model.Marca;
+import com.br.domain.model.Mobil;
+import com.br.domain.model.Model;
+import com.br.domain.model.Movimentacao;
+import com.br.domain.model.enums.TipoMovimentacao;
 import com.br.domain.repository.DocumentRepository;
+import com.br.domain.repository.MarcaRepository;
+import com.br.domain.repository.MobilRepository;
+import com.br.domain.repository.ModelRepository;
+import com.br.domain.repository.MovimentacaoRepository;
 import com.br.domain.service.DocumentService;
 
 @Service
@@ -13,11 +22,42 @@ public class DocumentServiceImpl implements DocumentService{
 
 	@Autowired
 	private DocumentRepository documentRepository;
+	
+	@Autowired
+	private MobilRepository mobilRepository;
+	
+	@Autowired
+	private ModelRepository modelRepository;
+	
+	@Autowired
+	private MarcaRepository marcaRepository;
+	
+	@Autowired
+	private MovimentacaoRepository movimentacaoRepository;
+	
+	
 
 	@Override
-	public Document save(Document document) {
-		return documentRepository.save(document);
+	public Document save(Document document, Long mobilId, Long modelId, Long marcaId) {
+        Mobil mobil = mobilRepository.findById(mobilId)
+                                     .orElseThrow(() -> new EntidadeNaoExisteException("Mobil não encontrado"));
+        Model model = modelRepository.findById(modelId)
+                                     .orElseThrow(() -> new EntidadeNaoExisteException("Model não encontrado"));
+        Marca marca = marcaRepository.findById(marcaId)
+                                     .orElseThrow(() -> new EntidadeNaoExisteException("Marca não encontrada"));
+        marca.setMobil(mobil);
+        document.setModel(model);
+        Document savedDocument = documentRepository.save(document);
+        Movimentacao movimentacao = new Movimentacao();
+        movimentacao.setMobil(mobil);
+        movimentacao.setTipoMovimentacao(TipoMovimentacao.CRIACAO_DOCUMENTO);
+        movimentacaoRepository.save(movimentacao);
+        
+		return savedDocument;
 	}
+	
+	
+	
 
 	@Override
 	public List<Document> findAll() {
