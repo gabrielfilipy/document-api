@@ -2,15 +2,19 @@ package com.br.domain.model;
 
 import lombok.*;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
 @Getter
 @Setter
 @Table(name = "TBL_MODEL_DOCUMENT")
 @Entity
-public class Model {
+public class Model implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 
-    @Id
+	@Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private Long id;
 

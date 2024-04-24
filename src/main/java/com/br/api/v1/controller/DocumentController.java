@@ -75,19 +75,4 @@ public class DocumentController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(documentModelMapper.toModel(documentService.save(documentAtual)));
 	}
 	
-	@PutMapping("/ativar/{id}")
-    public ResponseEntity<DocumentModel> activateUser(@RequestBody DocumentModelInput documentModelInput ,
-    		@PathVariable (name = "id") Long id) {
-		Document document = documentService.findById(id);
-		documentEditModelMapperBack.copyToDomainObject(documentModelInput, document);
-		return ResponseEntity.status(HttpStatus.CREATED).body(documentModelMapper.toModel(documentService.activateUser(id)));
-	}
-	
-    @PutMapping("/desativar/{id}")
-    public ResponseEntity<DocumentModel> deactivateUser( @RequestBody DocumentModelInput documentModelInput, 
-    		@PathVariable (name = "id") Long id) {
-	    Document document = documentService.findById(id);
-	    documentEditModelMapperBack.copyToDomainObject(documentModelInput, document);
-		return ResponseEntity.status(HttpStatus.CREATED).body(documentModelMapper.toModel(documentService.deactivateUser(id)));
-	}
 }
