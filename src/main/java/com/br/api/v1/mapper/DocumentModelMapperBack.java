@@ -12,7 +12,7 @@ public class DocumentModelMapperBack {
 	@Autowired
 	ModelMapper modelMapper;
 
-	public Document toModel(DocumentModelInput documentModelInput) {
+	public Document toDocument(DocumentModelInput documentModelInput) {
 		Document document = 
 				modelMapper.map(documentModelInput, Document.class);
 		return document;

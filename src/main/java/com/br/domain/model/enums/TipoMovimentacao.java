@@ -19,7 +19,7 @@ public enum TipoMovimentacao {
 
     public static TipoMovimentacao findByCode(int code) {
         for (TipoMovimentacao tipo : TipoMovimentacao.values()) {
-            if (tipo.getCode() == code) {
+             if (tipo.getCode() == code) {
                 return tipo;
             }
         }

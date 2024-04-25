@@ -1,17 +1,16 @@
 package com.br.api.v1.model.input;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.br.domain.model.Mobil;
+import com.br.domain.model.Model;
+import lombok.*;
 
 @Getter
 @Setter
 public class DocumentModelInput {
 
-	private String modelo;
-	private String meustextosPadroes;
-	private String responsavelPelaAssinatura;
-	private String nomeCompleto;
-	private String interessado;
-	private String assunto;
-	private String numeroDeReferencia;
+	private Model model;
+	private Long subscritor;
+	private String descricao;
+	private Mobil mobil;
+	private String file;
 }
