@@ -21,8 +21,8 @@ public class Model implements Serializable{
     @Column(name = "sigla")
     private String siglaModel;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "label")
+    private String label;
 
     private String descricaoCompleta;
 

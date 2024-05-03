@@ -15,7 +15,8 @@ import com.br.domain.service.ModelService;
 import com.br.domain.service.TemplateSpec.TemplateSpec;
 
 @RestController
-@RequestMapping("/model")
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping("/v1/model")
 public class ModelController {
 
 	@Autowired

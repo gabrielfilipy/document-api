@@ -7,7 +7,7 @@ import net.kaczmarzyk.spring.data.jpa.web.annotation.Spec;
 
 public class TemplateSpec {
 
-	@Spec(path = "name", spec = Like.class)
+	@Spec(path = "label", spec = Like.class)
     public interface ModelSpec extends Specification<Model> {}
 
 }
