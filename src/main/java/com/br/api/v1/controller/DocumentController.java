@@ -3,26 +3,14 @@ package com.br.api.v1.controller;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import com.br.api.v1.mapper.DocumentEditModelMapperBack;
-import com.br.api.v1.mapper.DocumentModelMapper;
-import com.br.api.v1.mapper.DocumentModelMapperBack;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+import com.br.api.v1.mapper.*;
 import com.br.api.v1.model.DocumentModel;
 import com.br.api.v1.model.input.DocumentModelInput;
 import com.br.domain.model.Document;
 import com.br.domain.service.DocumentService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 
 @Api(tags = "Documento")
 @RestController
@@ -37,9 +25,6 @@ public class DocumentController {
 	
 	@Autowired
 	private DocumentModelMapperBack documentModelMapperBack;
-	
-	@Autowired
-	private DocumentEditModelMapperBack documentEditModelMapperBack;
 	
 	@ApiOperation("Retorna uma lista de documento.")
     @ApiResponses({
@@ -60,11 +45,11 @@ public class DocumentController {
 	@PostMapping("/cadastrar")
 	public ResponseEntity<DocumentModel> cadastrar(@RequestBody @Valid 
 		DocumentModelInput documentModelInput, 
-		@RequestParam Long mobilId,
         @RequestParam Long modelId,
-        @RequestParam Long marcaId) {
+        @RequestParam Long markId
+        ) {
         Document document = documentModelMapperBack.toModel(documentModelInput);
-        Document savedDocument = documentService.save(document, mobilId, modelId, marcaId);
+        Document savedDocument = documentService.save(document,modelId, markId);
         DocumentModel documentModel = documentModelMapper.toModel(savedDocument);
         return ResponseEntity.status(HttpStatus.CREATED).body(documentModel);
     }

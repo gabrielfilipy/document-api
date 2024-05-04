@@ -1,33 +1,31 @@
 package com.br.domain.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
-import lombok.Getter;
-import lombok.Setter;
-
+import javax.validation.constraints.*;
+import lombok.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
 @Setter
 @Table(name = "TBL_DOCUMENT")
 @Entity
-public class Document {
+public class Document implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue( strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long documentId;
+	
+	 @ManyToOne(fetch = FetchType.LAZY)
+	 @JoinColumn(name = "model_id")
+	 private Model model;
 	
 	@NotNull
-	@NotBlank
-	@OneToOne
-	@JoinColumn(name = "model_id", unique = true)
-	private Model model;
-	
-	@NotNull
-	@NotBlank
 	@Column(name = "subscritor")
 	private Long subscritor;
 	
@@ -36,7 +34,8 @@ public class Document {
 	@Column(name = "descricao")
 	private String descricao;
 
-	@OneToOne
+	@NotNull
+	@OneToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name = "mobil_id", unique = true)
 	private Mobil mobil;
 
