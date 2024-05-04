@@ -64,7 +64,7 @@ public class DocumentServiceImpl implements DocumentService{
 	
 
 	private String getSiglaFinalizado(Document document) {
-		String modelo = document.getModel().getName();
+		String modelo = document.getModel().getSiglaModel();
 		String[] palavras = modelo.split("\\s+");
         int indiceUltimaPalavra = palavras.length - 1;
         String ultimaPalavra = palavras[indiceUltimaPalavra].substring(0,  2);
