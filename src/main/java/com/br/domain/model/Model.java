@@ -1,9 +1,9 @@
 package com.br.domain.model;
 
 import lombok.*;
-
 import java.io.Serializable;
-
+import java.util.*;
+import java.io.Serializable;
 import javax.persistence.*;
 
 @Getter
@@ -16,7 +16,7 @@ public class Model implements Serializable{
 
 	@Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long modelId;
 
     @Column(name = "sigla")
     private String siglaModel;
@@ -31,5 +31,9 @@ public class Model implements Serializable{
 
     @Column(name = "active")
     private Boolean active;
+    
+    @ManyToMany(mappedBy = "model")
+    private Set<Document> document = new HashSet<>();
+    
 
 }

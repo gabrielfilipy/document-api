@@ -1,6 +1,7 @@
 package com.br.api.v1.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter

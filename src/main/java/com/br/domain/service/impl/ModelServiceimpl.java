@@ -20,7 +20,7 @@ public class ModelServiceimpl implements ModelService{
 
 	@Override
 	public Model salvar(Model model) {
-		if(model.getId() == null)
+		if(model.getModelId() == null)
 			model.setActive(true);
 		
 		return modelRepository.save(model);

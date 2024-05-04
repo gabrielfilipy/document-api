@@ -1,10 +1,7 @@
 package com.br.api.v1.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.*;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import com.br.api.v1.mapper.*;
@@ -65,5 +62,4 @@ public class ModelController {
     public ResponseEntity<ModelModel> desactiveModel(@RequestBody ModelActiveModelInput modelActiveModelInput, @PathVariable(name = "id") Long id ) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(modelModelMapper.toModel(modelService.desactiveModel(id)));
 	}
-	
 }
