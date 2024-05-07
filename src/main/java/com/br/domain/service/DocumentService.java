@@ -5,7 +5,7 @@ import com.br.domain.model.Document;
 
 public interface DocumentService {
 
-	Document save(Document document,Long modelId, Long markId);
+	Document save(Document document);
 	List<Document> findAll();
 	Document findById(Long id);
 //	Document deactivateUser(Long id);

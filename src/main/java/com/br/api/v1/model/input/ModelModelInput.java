@@ -6,10 +6,5 @@ import lombok.*;
 @Setter
 public class ModelModelInput {
 
-	private Long id;
-    private String siglaModel;
-    private String label;
-    private String descricaoCompleta;
-    private String html;
-    private Boolean active;
+	private Long modelId;
 }
