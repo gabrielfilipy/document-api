@@ -27,7 +27,7 @@ public class Document implements Serializable{
 	
 	@NotNull
 	@Column(name = "subscritor")
-	private Long subscritor;
+	private Long subscritorId;
 	
 	@NotNull
 	@NotBlank

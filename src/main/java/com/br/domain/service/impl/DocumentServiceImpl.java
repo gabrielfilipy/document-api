@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.br.core.config.Generator;
 import com.br.domain.exception.EntidadeNaoExisteException;
 import com.br.domain.model.*;
+import com.br.domain.model.enums.TypeMark;
 import com.br.domain.model.enums.TypeMovement;
 import com.br.domain.repository.*;
 import com.br.domain.service.DocumentService;
@@ -35,18 +36,19 @@ public class DocumentServiceImpl implements DocumentService{
 	private Generator generator;
 	
 	@Override
-	public Document save(Document document, Long modelId, Long markId) {
-		System.out.println(modelId+markId);
-        Model model = modelRepository.findById(modelId)
+	public Document save(Document document) {
+        Model model = modelRepository.findById(document.getModel().getModelId())
                                      .orElseThrow(() -> new EntidadeNaoExisteException("Model não encontrado"));
-        Mark mark = markRepository.findById(markId)
-                .orElseThrow(() -> new EntidadeNaoExisteException("Marca não encontrada"));
+        Mark mark = markRepository.findByCode(TypeMark.CRIACAO_MARCA.getCode())
+        		.orElseThrow(() -> new EntidadeNaoExisteException("Marca não encontrado"));  
         document.setModel(model);
         Mobil mobil = new Mobil();
         mobil.setDateCreate(LocalDateTime.now());
         mobil.getMark().add(mark);
+        mobil.setUserId(document.getSubscritorId());
         Movement movimentacao = new Movement();
         movimentacao.setMobil(mobil);
+        movimentacao.setSubscritor(document.getSubscritorId());
         movimentacao.setTypeMovement(TypeMovement.CRIACAO);	
         mobil = mobilRepository.save(mobil); 
         movimentacao = movementRepository.save(movimentacao);

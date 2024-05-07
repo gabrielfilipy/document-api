@@ -44,12 +44,9 @@ public class DocumentController {
 	
 	@PostMapping("/cadastrar")
 	public ResponseEntity<DocumentModel> cadastrar(@RequestBody @Valid 
-		DocumentModelInput documentModelInput, 
-        @RequestParam Long modelId,
-        @RequestParam Long markId
-        ) {
+		DocumentModelInput documentModelInput) {
         Document document = documentModelMapperBack.toModel(documentModelInput);
-        Document savedDocument = documentService.save(document,modelId, markId);
+        Document savedDocument = documentService.save(document);
         DocumentModel documentModel = documentModelMapper.toModel(savedDocument);
         return ResponseEntity.status(HttpStatus.CREATED).body(documentModel);
     }
