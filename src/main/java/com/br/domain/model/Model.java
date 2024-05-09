@@ -2,7 +2,6 @@ package com.br.domain.model;
 
 import lombok.*;
 import java.io.Serializable;
-import java.util.*;
 import javax.persistence.*;
 
 @Getter
@@ -30,9 +29,5 @@ public class Model implements Serializable{
 
     @Column(name = "active")
     private Boolean active;
-    
-    @ManyToMany(mappedBy = "model")
-    private Set<Document> document = new HashSet<>();
-    
 
 }
