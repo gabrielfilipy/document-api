@@ -7,4 +7,5 @@ import lombok.*;
 public class ModelModelInput {
 
 	private Long modelId;
+	private String siglaModel;
 }

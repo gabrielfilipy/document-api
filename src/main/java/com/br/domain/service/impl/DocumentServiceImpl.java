@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 import com.br.core.config.Generator;
 import com.br.domain.exception.EntidadeNaoExisteException;
 import com.br.domain.model.*;
-import com.br.domain.model.enums.TypeMark;
-import com.br.domain.model.enums.TypeMovement;
+import com.br.domain.model.enums.*;
 import com.br.domain.repository.*;
 import com.br.domain.service.DocumentService;
 

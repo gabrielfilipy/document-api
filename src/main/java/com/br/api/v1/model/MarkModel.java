@@ -7,6 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 public class MarkModel {
+	
 	    private Long markId;
 	    private String nome;
 	    private String descricaoDetalhada;
