@@ -31,9 +31,5 @@ public class Model implements Serializable{
 
     @Column(name = "active")
     private Boolean active;
-    
-    @ManyToMany(mappedBy = "model")
-    private Set<Document> document = new HashSet<>();
-    
 
 }
