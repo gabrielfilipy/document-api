@@ -2,8 +2,6 @@ package com.br.domain.model;
 
 import lombok.*;
 import java.io.Serializable;
-import java.util.*;
-import java.io.Serializable;
 import javax.persistence.*;
 
 @Getter

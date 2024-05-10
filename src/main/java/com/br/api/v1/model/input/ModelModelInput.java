@@ -5,7 +5,7 @@ import lombok.*;
 @Getter
 @Setter
 public class ModelModelInput {
-
+	
 	private Long modelId;
 	private String siglaModel;
 	private String html;

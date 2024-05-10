@@ -2,11 +2,11 @@ package com.br.domain.model.enums;
 
 public enum TypeMark {
 	
-	CRIACAO_MARCA(1L, "Criação"),
+	CRIACAO_MARCA(0L, "Criação"),
 	//
-	ANEXACAO_MARCA(2L, "Anexação"),
+	ANEXACAO_MARCA(1L, "Anexação"),
 	//
-	TRANSIÇÃO_MARCA(3L, "Transição da marca ");
+	TRANSIÇÃO_MARCA(2L, "Transição da marca ");
 	//
 
 	private final Long code;

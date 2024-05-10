@@ -1,12 +1,9 @@
 package com.br.domain.service.impl;
 
-import java.util.List;
-import java.util.Optional;
-
+import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
 import com.br.domain.exception.EntidadeNaoExisteException;
 import com.br.domain.model.Model;
 import com.br.domain.repository.ModelRepository;
