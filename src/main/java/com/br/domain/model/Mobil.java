@@ -3,6 +3,12 @@ package com.br.domain.model;
 import lombok.*;
 import javax.persistence.*;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -20,12 +26,17 @@ public class Mobil implements Serializable{
 	private Long mobilId;
 
     @Column(name = "date_create")
+    @CreationTimestamp
+    @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDateTime dateCreate;
 
-    @OneToMany(mappedBy = "mobil", fetch = FetchType.LAZY )
+    @JsonIgnore
+    @JsonManagedReference
+    @OneToMany(mappedBy = "mobil", cascade = CascadeType.ALL )
     @BatchSize(size = 1)
     private List<Movement> movimentacaos = new ArrayList<>();
     
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_ult_mov")
 	private Movement ultimaMovimentacaoNaoCancelada;
@@ -36,7 +47,7 @@ public class Mobil implements Serializable{
 	@Column(name = "sigla")
 	private String sigla;
     
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
     name = "mobil_mark",
     joinColumns = @JoinColumn(name = "mobil_id"),
@@ -44,7 +55,7 @@ public class Mobil implements Serializable{
     )
     private Set<Mark> mark = new HashSet<>();
     
-    @OneToMany(mappedBy = "mobil", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "mobil", fetch = FetchType.EAGER)
     private List<Document> documento  = new ArrayList<>();
 
 }
