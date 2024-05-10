@@ -1,10 +1,8 @@
 package com.br.domain.service.impl;
 
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.br.domain.exception.EntidadeNaoExisteException;
 import com.br.domain.model.Movement;
 import com.br.domain.repository.MovementRepository;
@@ -37,6 +35,5 @@ public class MovementServiceImpl implements MovementService {
 			throw new EntidadeNaoExisteException("Movimentação informada não existe: " + mobilId);
 		}
 		return movimentacao;
-	} 
-
+	}
 }
