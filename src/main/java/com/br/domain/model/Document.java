@@ -17,10 +17,6 @@ public class Document implements Serializable{
 	@GeneratedValue( strategy = GenerationType.IDENTITY)
 	private Long documentId;
 	
-	 @ManyToOne(fetch = FetchType.LAZY)
-	 @JoinColumn(name = "model_id")
-	 private Model model;
-	
 	@NotNull
 	@Column(name = "subscritor")
 	private Long subscritorId;
@@ -30,12 +26,15 @@ public class Document implements Serializable{
 	@Column(name = "descricao")
 	private String descricao;
 
-	@NotNull
-	@OneToOne (fetch = FetchType.LAZY)
-	@JoinColumn(name = "mobil_id", unique = true)
-	private Mobil mobil;
-
 	@Column(name = "file")
 	private String file;
-	
+
+	@ManyToOne()
+	@JoinColumn(name = "model_id")
+	private Model model;
+
+	@ManyToOne()
+	@JoinColumn(name = "mobil_id")
+	private Mobil mobil;
+
 }

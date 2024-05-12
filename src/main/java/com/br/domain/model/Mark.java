@@ -7,6 +7,7 @@ import com.br.domain.model.enums.TypeMark;
 
 @Getter
 @Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "TBL_MARK_MOBIL")
 @Entity
 public class Mark implements Serializable{
@@ -14,7 +15,9 @@ public class Mark implements Serializable{
 	private static final long serialVersionUID = 1L;
 
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @Column(name = "mark_id")
     private Long markId;
 
     @Column(name = "nome")
@@ -25,10 +28,6 @@ public class Mark implements Serializable{
     
     @Column(name = "code")
     private Long code;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "movement_id")
-	private Movement movimentacao;
     
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "tipo_marca")

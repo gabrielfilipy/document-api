@@ -1,6 +1,10 @@
 package com.br.domain.service.impl;
 
+import java.util.List;
 import java.util.Optional;
+
+import com.br.domain.model.Mobil;
+import com.br.domain.repository.MobilRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.br.domain.exception.EntidadeNaoExisteException;
@@ -13,6 +17,9 @@ public class MovementServiceImpl implements MovementService {
 	
 	@Autowired
 	MovementRepository movementRepository;
+
+	@Autowired
+	private MobilRepository mobilRepository;
 
 	@Override
 	public Movement save(Movement movimentacao) {
@@ -36,4 +43,15 @@ public class MovementServiceImpl implements MovementService {
 		}
 		return movimentacao;
 	}
+
+	@Override
+	public List<Movement> findAll() {
+		return movementRepository.findAll();
+	}
+
+	@Override
+	public Mobil buscarMovimentacoesDoMobil(Long mobilId) {
+		return mobilRepository.findByIdWithMovimentacoes(mobilId).get();
+	}
+
 }

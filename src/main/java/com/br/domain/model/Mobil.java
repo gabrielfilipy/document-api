@@ -15,6 +15,7 @@ import java.util.*;
 
 @Getter
 @Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "TBL_MOBIL_DOCUMENT")
 @Entity
 public class Mobil implements Serializable{
@@ -23,39 +24,22 @@ public class Mobil implements Serializable{
 
 	@Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    @Column(name = "mobil_id")
 	private Long mobilId;
 
-    @Column(name = "date_create")
-    @CreationTimestamp
     @JsonFormat(pattern = "dd/MM/yyyy")
+    @CreationTimestamp
+    @Column(name = "date_create")
     private LocalDateTime dateCreate;
 
-    @JsonIgnore
-    @JsonManagedReference
-    @OneToMany(mappedBy = "mobil", cascade = CascadeType.ALL )
-    @BatchSize(size = 1)
-    private List<Movement> movimentacaos = new ArrayList<>();
-    
-    @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_ult_mov")
-	private Movement ultimaMovimentacaoNaoCancelada;
-    
-    @Column(name = "user_id")
-    private Long userId;
-   
-	@Column(name = "sigla")
-	private String sigla;
-    
-	@ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-    name = "mobil_mark",
-    joinColumns = @JoinColumn(name = "mobil_id"),
-    inverseJoinColumns = @JoinColumn(name = "marca_id")
-    )
-    private Set<Mark> mark = new HashSet<>();
-    
-    @OneToMany(mappedBy = "mobil", fetch = FetchType.EAGER)
-    private List<Document> documento  = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "marca_mobil_adicionada",
+            joinColumns = @JoinColumn(name = "mobil_id"),
+            inverseJoinColumns = @JoinColumn(name = "mark_id"))
+    private List<Mark> marcas = new ArrayList<>();
+
+    @OneToMany(mappedBy = "mobil", fetch = FetchType.LAZY)
+    private List<Movement> movimentacoes = new ArrayList<>();
 
 }

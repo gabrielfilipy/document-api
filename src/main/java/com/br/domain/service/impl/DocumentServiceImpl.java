@@ -36,36 +36,12 @@ public class DocumentServiceImpl implements DocumentService{
 	
 	@Override
 	public Document save(Document document) {
-        Model model = modelRepository.findById(document.getModel().getModelId())
-                                     .orElseThrow(() -> new EntidadeNaoExisteException("Model não encontrado"));
-        Mark mark = markRepository.findByCode(TypeMark.CRIACAO_MARCA.getCode())
-        		.orElseThrow(() -> new EntidadeNaoExisteException("Marca não encontrado"));  
-        document.setModel(model);
-        Mobil mobil = new Mobil();
-        mobil.setDateCreate(LocalDateTime.now());
-        mobil.getMark().add(mark);
-        mobil.setUserId(document.getSubscritorId());
-        Movement movimentacao = new Movement();
-        movimentacao.setMobil(mobil);
-        movimentacao.setSubscritor(document.getSubscritorId());
-        movimentacao.setTypeMovement(TypeMovement.CRIACAO);	
-        mobil = mobilRepository.save(mobil); 
-        movimentacao = movementRepository.save(movimentacao);
-        movimentacao = movementRepository.findFirstByMobilIdOrderByDataHora(mobil.getMobilId()).get();
-        mobil.setUltimaMovimentacaoNaoCancelada(movimentacao);
-        mobilRepository.save(mobil);
-        document.setMobil(mobil);
-	    Document savedDocument = documentRepository.save(document);
-	    mobil.setSigla(getSiglaTemporario());
-	    mobil.getDocumento().add(savedDocument);
-        mobilRepository.save(mobil);
-        savedDocument.setMobil(mobil);
-        return savedDocument;
+        return documentRepository.save(document);
 	}	
 	
 
 	private String getSiglaFinalizado(Document document) {
-		String modelo = document.getModel().getSiglaModel();
+		String modelo = "";
 		String[] palavras = modelo.split("\\s+");
         int indiceUltimaPalavra = palavras.length - 1;
         String ultimaPalavra = palavras[indiceUltimaPalavra].substring(0,  2);

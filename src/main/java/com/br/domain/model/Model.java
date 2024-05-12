@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Setter
 @Table(name = "TBL_MODEL_DOCUMENT")
 @Entity
-public class Model implements Serializable{
+public class Model implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
