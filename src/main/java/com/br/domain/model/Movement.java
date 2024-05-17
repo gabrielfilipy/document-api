@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@Table(name = "TBL_MOV_DOCUMENT")
+@Table(name = "TBL_MOVEMENT")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Movement implements Serializable {

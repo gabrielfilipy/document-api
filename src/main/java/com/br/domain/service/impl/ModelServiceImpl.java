@@ -9,17 +9,15 @@ import com.br.domain.repository.ModelRepository;
 import com.br.domain.service.ModelService;
 
 @Service
-public class ModelServiceImpl implements ModelService{
+public class ModelServiceImpl {
 	
 	@Autowired
 	ModelRepository modelRepository;
 
-	@Override
 	public Model save(Model model) {
 		return modelRepository.save(model);
 	}
 
-	@Override
 	public Model findById(Long id) {
 		Optional<Model> model = modelRepository.findById(id);
 		if(model.isEmpty()) {

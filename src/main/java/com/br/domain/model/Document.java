@@ -2,6 +2,8 @@ package com.br.domain.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import java.io.Serializable;
 
@@ -33,8 +35,8 @@ public class Document implements Serializable{
 	@JoinColumn(name = "model_id")
 	private Model model;
 
-	@ManyToOne()
-	@JoinColumn(name = "mobil_id")
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	@OneToOne
 	private Mobil mobil;
 
 }

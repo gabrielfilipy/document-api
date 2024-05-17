@@ -2,13 +2,8 @@ package com.br.domain.model;
 
 import lombok.*;
 import javax.persistence.*;
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.CreationTimestamp;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -16,7 +11,7 @@ import java.util.*;
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Table(name = "TBL_MOBIL_DOCUMENT")
+@Table(name = "TBL_MOBIL")
 @Entity
 public class Mobil implements Serializable{
 	
@@ -27,6 +22,9 @@ public class Mobil implements Serializable{
     @EqualsAndHashCode.Include
     @Column(name = "mobil_id")
 	private Long mobilId;
+
+    @Column(name = "sigla_mobil")
+    private String siglaMobil;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     @CreationTimestamp
@@ -41,5 +39,11 @@ public class Mobil implements Serializable{
 
     @OneToMany(mappedBy = "mobil", fetch = FetchType.LAZY)
     private List<Movement> movimentacoes = new ArrayList<>();
+
+    @Column(name = "ult_movimentacao_id")
+    private Long ultimaMovimentacaoId;
+
+    @OneToOne
+    private Document documento;
 
 }

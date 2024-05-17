@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@Table(name = "TBL_MODEL_DOCUMENT")
+@Table(name = "TBL_MODEL")
 @Entity
 public class Model implements Serializable {
 	
