@@ -8,7 +8,7 @@ import com.br.domain.model.enums.TypeMark;
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Table(name = "TBL_MARK")
+@Table(name = "tbl_mark")
 @Entity
 public class Mark implements Serializable{
 	

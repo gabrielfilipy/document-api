@@ -1,6 +1,5 @@
 package com.br.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import javax.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -15,7 +14,7 @@ import java.util.*;
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Table(name = "TBL_MOBIL")
+@Table(name = "tbl_mobil")
 @Entity
 public class Mobil implements Serializable{
 	
@@ -30,7 +29,6 @@ public class Mobil implements Serializable{
     @Column(name = "sigla_mobil")
     private String siglaMobil;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
     @CreationTimestamp
     @Column(name = "date_create")
     private LocalDateTime dateCreate;

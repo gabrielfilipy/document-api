@@ -1,4 +1,4 @@
-CREATE TABLE TBL_MOVEMENT (
+CREATE TABLE tbl_movement (
     movement_id bigint NOT NULL AUTO_INCREMENT,
     date_time_final datetime DEFAULT NULL,
     date_time_create datetime NOT NULL,
@@ -7,8 +7,8 @@ CREATE TABLE TBL_MOVEMENT (
     tipo_movimentacao int NOT NULL,
     mobil_mobil_id bigint NOT NULL,
 
-    PRIMARY KEY (document_id)
-) engine=InnoDB default charset=utf8;
+    PRIMARY KEY (movement_id)
+);
 
-alter table TBL_MOVEMENT add constraint fk_mobil_movement
+alter table tbl_movement add constraint fk_mobil_movement
 foreign key (mobil_mobil_id) references tbl_mobil (mobil_id);

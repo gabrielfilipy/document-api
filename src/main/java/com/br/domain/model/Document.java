@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-@Table(name = "TBL_DOCUMENT")
+@Table(name = "tbl_document")
 @Entity
 public class Document implements Serializable{
 	
@@ -18,10 +18,6 @@ public class Document implements Serializable{
 	@Id
 	@GeneratedValue( strategy = GenerationType.IDENTITY)
 	private Long documentId;
-	
-	@NotNull
-	@Column(name = "subscritor")
-	private Long subscritorId;
 	
 	@NotNull
 	@NotBlank

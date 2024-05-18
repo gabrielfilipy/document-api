@@ -1,4 +1,4 @@
-CREATE TABLE TBL_MODEL (
+CREATE TABLE tbl_model (
     model_id bigint NOT NULL AUTO_INCREMENT,
     date_time_final datetime DEFAULT NULL,
     descricao_detalhada TEXT,
@@ -7,4 +7,4 @@ CREATE TABLE TBL_MODEL (
     sigla varchar(10),
 
     PRIMARY KEY (model_id)
-) engine=InnoDB default charset=utf8;
+);

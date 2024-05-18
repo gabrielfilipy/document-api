@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@Table(name = "TBL_MODEL")
+@Table(name = "tbl_model")
 @Entity
 public class Model implements Serializable {
 	
@@ -29,7 +29,6 @@ public class Model implements Serializable {
     @Column(name = "html")
     private String html;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "date_time_final")
     private LocalDateTime dataHoraFinalizacao;
 

@@ -3,7 +3,6 @@ package com.br.domain.model;
 import com.br.domain.model.enums.TypeMovement;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@Table(name = "TBL_MOVEMENT")
+@Table(name = "tbl_movement")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Movement implements Serializable {
@@ -31,12 +30,10 @@ public class Movement implements Serializable {
     @Column(name = "subscritor_id")
     private Long subscritorId;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "date_time_create")
     @CreationTimestamp
     private LocalDateTime dataHoraCricao;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "date_time_final")
     private LocalDateTime dataHoraFinalizacao;
 
