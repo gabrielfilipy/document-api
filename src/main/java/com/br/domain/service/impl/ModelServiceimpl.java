@@ -1,5 +1,6 @@
 package com.br.domain.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -17,9 +18,9 @@ public class ModelServiceimpl implements ModelService{
 
 	@Override
 	public Model salvar(Model model) {
-		if(model.getModelId() == null)
-			model.setActive(true);
-		
+		if(model.getModelId() == null) {
+			model.setDataHoraFinalizacao(LocalDateTime.now());
+		}
 		return modelRepository.save(model);
 	}
 
@@ -27,7 +28,7 @@ public class ModelServiceimpl implements ModelService{
 	public Model desactiveModel(Long id) {
 		Model model = modelRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Modelo não encontrado."));
-		   model.setActive(false);
+		model.setDataHoraFinalizacao(LocalDateTime.now());
 		return modelRepository.save(model);
 	}
 
@@ -35,7 +36,7 @@ public class ModelServiceimpl implements ModelService{
 	public Model activeModel(Long id, Boolean ativo) {
 		Model model =  modelRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Modelo não encontrado."));
-		model.setActive(ativo);
+		model.setDataHoraFinalizacao(LocalDateTime.now());
 		return modelRepository.save(model);
 	}
 

@@ -9,9 +9,14 @@ import org.springframework.stereotype.Repository;
 import com.br.domain.model.Movement;
 
 @Repository
-public interface MovementRepository extends JpaRepository<Movement, Long>, JpaSpecificationExecutor<Movement>{
+public interface MovementRepository extends JpaRepository<Movement, Long>,
+		JpaSpecificationExecutor<Movement>, MovementRepositoryQuery {
 	
 	Optional<Movement> findById(Long movimentacaoId);
-	@Query("SELECT m FROM Movement m WHERE m.mobil.id = :mobilId ORDER BY m.dataHora DESC")
+	@Query("SELECT m FROM Movement m WHERE m.mobil.id = :mobilId ORDER BY m.dataHoraCricao DESC")
 	Optional<Movement> findFirstByMobilIdOrderByDataHora(@Param("mobilId") Long mobilId);
+
+	@Query("SELECT m FROM Movement m WHERE m.mobil.id = :mobilId ORDER BY m.dataHoraCricao DESC")
+	Optional<Movement> buscarPorMovimentacoesDoMobil(@Param("mobilId") Long mobilId);
+
 }

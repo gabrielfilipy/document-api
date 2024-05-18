@@ -10,19 +10,22 @@ import com.br.domain.repository.MobilRepository;
 import com.br.domain.service.*;
 
 @Service
-public class MobilServiceImpl implements MobilService{
+public class MobilServiceImpl implements MobilService {
 	
 	@Autowired
 	MobilRepository mobilRepository;
-	
-	@Autowired
-	MovementService movementService;
 	
 	@Override
 	public Mobil save(Mobil mobil) {
 		return mobilRepository.save(mobil);
 	}
-	
+
+	@Override
+	public Mobil buscarMobil(Long mobilId) {
+		return mobilRepository.findByIdWithMovimentacoes(mobilId)
+				.orElseThrow(() -> new RuntimeException("Mobil informado não existe."));
+	}
+
 	@Override
 	public Mobil fyndById(Long mobilId) {
 		Optional<Mobil> mobil = mobilRepository.findById(mobilId);

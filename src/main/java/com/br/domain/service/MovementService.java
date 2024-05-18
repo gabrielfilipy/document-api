@@ -5,15 +5,15 @@ import java.util.Optional;
 
 import com.br.domain.model.Mobil;
 import com.br.domain.model.Movement;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 public interface MovementService {
 	
 	Movement save(Movement movimentacao);
 	Movement findById(Long movimentacaoId);
-    Optional<Movement> buscarUltimaMovimentacaoMobilFilho(Long mobilId);
-
-	Mobil buscarMovimentacoesDoMobil(Long mobilId);
-
-	List<Movement> findAll();
+	Page<Movement> findAll(Specification<Movement> spec, Pageable pageable);
+	Page<Movement> buscarMovimentacoesDoMobil(Long mobilId, Pageable pageable);
   
 }

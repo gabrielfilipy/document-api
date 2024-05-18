@@ -1,11 +1,10 @@
 package com.br.domain.model;
 
 import com.br.domain.model.enums.TypeMovement;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
@@ -26,27 +25,27 @@ public class Movement implements Serializable {
     @EqualsAndHashCode.Include
     private Long movementId;
 
-    @Column(name = "pessoaRecebedora")
-    private Long pessoaRecebedora;
+    @Column(name = "pessoa_recebedora_id")
+    private Long pessoaRecebedoraId;
 
-    @Column(name = "subscritor")
-    private Long subscritor;
+    @Column(name = "subscritor_id")
+    private Long subscritorId;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
-    @Column(name = "date_time")
+    @Column(name = "date_time_create")
     @CreationTimestamp
-    private LocalDateTime dataHora;
+    private LocalDateTime dataHoraCricao;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "mobil_id", nullable = false)
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    @Column(name = "date_time_final")
+    private LocalDateTime dataHoraFinalizacao;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Mobil mobil;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "tipo_movimentacao")
     private TypeMovement typeMovement;
-    
-    @Column(name = "cancelada")
-    private boolean cancelada;
 
 }

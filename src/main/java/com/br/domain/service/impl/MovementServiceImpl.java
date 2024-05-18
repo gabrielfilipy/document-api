@@ -6,6 +6,9 @@ import java.util.Optional;
 import com.br.domain.model.Mobil;
 import com.br.domain.repository.MobilRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import com.br.domain.exception.EntidadeNaoExisteException;
 import com.br.domain.model.Movement;
@@ -34,24 +37,15 @@ public class MovementServiceImpl implements MovementService {
 		}
 		return movimentacao.get();
 	}
-	
+
 	@Override
-	public Optional<Movement> buscarUltimaMovimentacaoMobilFilho(Long mobilId) {
-		Optional<Movement> movimentacao = movementRepository.findFirstByMobilIdOrderByDataHora(mobilId);
-		if(movimentacao.isEmpty()) {
-			throw new EntidadeNaoExisteException("Movimentação informada não existe: " + mobilId);
-		}
-		return movimentacao;
+	public Page<Movement> findAll(Specification<Movement> spec, Pageable pageable) {
+		return mobilRepository.findAll(spec, pageable);
 	}
 
 	@Override
-	public List<Movement> findAll() {
-		return movementRepository.findAll();
-	}
-
-	@Override
-	public Mobil buscarMovimentacoesDoMobil(Long mobilId) {
-		return mobilRepository.findByIdWithMovimentacoes(mobilId).get();
+	public Page<Movement> buscarMovimentacoesDoMobil(Long mobilId, Pageable pageable) {
+		return movementRepository.buscarMovimentacoesDoMobil2(mobilId, pageable);
 	}
 
 }

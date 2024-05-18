@@ -1,7 +1,9 @@
 package com.br.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import javax.persistence.*;
 
 @Getter
@@ -22,12 +24,13 @@ public class Model implements Serializable {
     @Column(name = "label")
     private String label;
 
-    private String descricaoCompleta;
+    private String descricaoDetalhada;
 
     @Column(name = "html")
     private String html;
 
-    @Column(name = "active")
-    private Boolean active;
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    @Column(name = "date_time_final")
+    private LocalDateTime dataHoraFinalizacao;
 
 }

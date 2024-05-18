@@ -1,9 +1,13 @@
 package com.br.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import javax.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -37,7 +41,9 @@ public class Mobil implements Serializable{
             inverseJoinColumns = @JoinColumn(name = "mark_id"))
     private List<Mark> marcas = new ArrayList<>();
 
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "mobil", fetch = FetchType.LAZY)
+    @Fetch(FetchMode.SUBSELECT)
     private List<Movement> movimentacoes = new ArrayList<>();
 
     @Column(name = "ult_movimentacao_id")
