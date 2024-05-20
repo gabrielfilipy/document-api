@@ -37,7 +37,7 @@ public class DocumentServiceImpl implements DocumentService{
 	@Override
 	public Document save(Document document) {
 
-        preencherModeloDocumento(Document document);
+        preencherModeloDocumento(document);
 		return documentRepository.save(document);
 	}	
 
