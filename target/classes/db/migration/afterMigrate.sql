@@ -20,8 +20,8 @@ ALTER TABLE tbl_document AUTO_INCREMENT = 1;
 ALTER TABLE tbl_movement AUTO_INCREMENT = 1;
 
 -- Inserir novos dados
-INSERT INTO tbl_model (model_id, date_time_final, descricao_detalhada, html, label, sigla)
-VALUES (NULL, NULL, 'Memorando é um tipo de documento que trata assuntos internos.', '<input/>', 'Memorando', 'MEM');
+INSERT INTO tbl_model (model_id, date_time_final, descricao_detalhada, html_form, html_model_doc, label, sigla)
+VALUES (NULL, NULL, 'Memorando é um tipo de documento que trata assuntos internos.', '<input/>', '<h1>Visualizar documento<h1/>', 'Memorando', 'MEM');
 
 INSERT INTO tbl_mark (mark_id, code, desc_detalhada, nome, tipo_marca)
 VALUES (NULL, 1, 'Descricao', 'Criacao', 1);

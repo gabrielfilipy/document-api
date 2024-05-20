@@ -17,7 +17,7 @@ public class MovementRepositoryImpl {
     @PersistenceContext
     private EntityManager manager;
 
-    public Page<Movement> buscarMovimentacoesDoMobil2(Long mobilId, Pageable pageable) throws Exception {
+    public Page<Movement> buscarMovimentacoesDoMobilFiltro(Long mobilId, Pageable pageable) throws Exception {
         CriteriaBuilder builder = manager.getCriteriaBuilder();
         CriteriaQuery<Movement> criteria = builder.createQuery(Movement.class);
         Root<Movement> root = criteria.from(Movement.class);

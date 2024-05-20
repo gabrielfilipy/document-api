@@ -6,9 +6,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Getter
 @Setter
@@ -30,12 +32,16 @@ public class Movement implements Serializable {
     @Column(name = "subscritor_id")
     private Long subscritorId;
 
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss'Z'")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     @Column(name = "date_time_create")
     @CreationTimestamp
-    private LocalDateTime dataHoraCricao;
+    private OffsetDateTime dataHoraCricao;
 
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss'Z'")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     @Column(name = "date_time_final")
-    private LocalDateTime dataHoraFinalizacao;
+    private OffsetDateTime dataHoraFinalizacao;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

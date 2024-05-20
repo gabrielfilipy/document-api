@@ -36,9 +36,15 @@ public class DocumentServiceImpl implements DocumentService{
 	
 	@Override
 	public Document save(Document document) {
-        return documentRepository.save(document);
+
+        preencherModeloDocumento(Document document);
+		return documentRepository.save(document);
 	}	
-	
+
+	public void preencherModeloDocumento(Document document) {
+
+		document.setFile("NOVO HTML DOCUMENTO");
+	}
 
 	private String getSiglaFinalizado(Document document) {
 		String modelo = "";
@@ -65,26 +71,9 @@ public class DocumentServiceImpl implements DocumentService{
 	public Document findById(Long id) {
 		Optional<Document> document = documentRepository.findById(id);
 		if (document.isEmpty()) {
-			throw new EntidadeNaoExisteException("Documento ");
+			throw new EntidadeNaoExisteException("Documento não existe.");
 		}
 		return document.get();
 	}
-
-//	@Override
-//	public Document deactivateUser(Long id) {
-//		Document document = documentRepository.findById(id)
-//                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
-//		document.setActive(false);
-//        return documentRepository.save(document);
-//	}
-//
-//	@Override
-//	public Document activateUser(Long id) {
-//		Document document = documentRepository.findById(id)
-//			.orElseThrow(() -> new RuntimeException("Documento não encontrado!"));
-//		document.setActive(true);
-//		return documentRepository.save(document);
-//	}
-	
 	
 }

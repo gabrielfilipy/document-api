@@ -14,6 +14,6 @@ public interface MovementService {
 	Movement save(Movement movimentacao);
 	Movement findById(Long movimentacaoId);
 	Page<Movement> findAll(Specification<Movement> spec, Pageable pageable);
-	Page<Movement> buscarMovimentacoesDoMobil(Long mobilId, Pageable pageable);
+	Page<Movement> buscarMovimentacoesDoMobilFiltro(Long mobilId, Pageable pageable);
   
 }

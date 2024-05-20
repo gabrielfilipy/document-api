@@ -3,6 +3,8 @@ package com.br.domain.service.impl;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.br.domain.exception.EntidadeNaoExisteException;
 import com.br.domain.model.Mobil;
@@ -21,18 +23,14 @@ public class MobilServiceImpl implements MobilService {
 	}
 
 	@Override
-	public Mobil buscarMobil(Long mobilId) {
-		return mobilRepository.findByIdWithMovimentacoes(mobilId)
-				.orElseThrow(() -> new RuntimeException("Mobil informado não existe."));
+	public Page<Mobil> filtro(Pageable pageable) {
+		return mobilRepository.buscarMobilsFiltro(pageable);
 	}
 
 	@Override
-	public Mobil fyndById(Long mobilId) {
-		Optional<Mobil> mobil = mobilRepository.findById(mobilId);
-		if(mobil.isEmpty()) {
-			throw new EntidadeNaoExisteException("Mobil informado não existe: " + mobilId);
-		}
-		return mobil.get();
+	public Mobil buscarMobil(Long mobilId) {
+		return mobilRepository.findByIdWithMovimentacoes(mobilId)
+				.orElseThrow(() -> new RuntimeException("Mobil informado não existe."));
 	}
 
 }

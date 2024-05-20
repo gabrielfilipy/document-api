@@ -1,6 +1,8 @@
 package com.br.domain.service.impl;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -18,9 +20,6 @@ public class ModelServiceimpl implements ModelService{
 
 	@Override
 	public Model salvar(Model model) {
-		if(model.getModelId() == null) {
-			model.setDataHoraFinalizacao(LocalDateTime.now());
-		}
 		return modelRepository.save(model);
 	}
 
@@ -28,7 +27,7 @@ public class ModelServiceimpl implements ModelService{
 	public Model desactiveModel(Long id) {
 		Model model = modelRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Modelo não encontrado."));
-		model.setDataHoraFinalizacao(LocalDateTime.now());
+		model.setDataHoraFinalizacao(OffsetDateTime.now(ZoneOffset.UTC));
 		return modelRepository.save(model);
 	}
 
@@ -36,7 +35,7 @@ public class ModelServiceimpl implements ModelService{
 	public Model activeModel(Long id, Boolean ativo) {
 		Model model =  modelRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Modelo não encontrado."));
-		model.setDataHoraFinalizacao(LocalDateTime.now());
+		model.setDataHoraFinalizacao(OffsetDateTime.now(ZoneOffset.UTC));
 		return modelRepository.save(model);
 	}
 

@@ -6,6 +6,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface MovementRepositoryQuery {
 
-	Page<Movement> buscarMovimentacoesDoMobil2(Long mobilId, Pageable pageable);
+	Page<Movement> buscarMovimentacoesDoMobilFiltro(Long mobilId, Pageable pageable);
 
 }

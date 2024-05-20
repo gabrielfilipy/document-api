@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -29,6 +30,8 @@ public class Mobil implements Serializable{
     @Column(name = "sigla_mobil")
     private String siglaMobil;
 
+    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss'Z'")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     @CreationTimestamp
     @Column(name = "date_create")
     private LocalDateTime dateCreate;

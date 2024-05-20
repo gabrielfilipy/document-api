@@ -1,14 +1,9 @@
 package com.br.api.v1.controller;
 
-import javax.validation.Valid;
-import javax.websocket.server.PathParam;
-
 import com.br.domain.repository.MovementRepository;
-import com.br.domain.repository.spec.TemplateSpec;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +31,7 @@ public class MovementController {
 	@GetMapping("/filtro")
 	public ResponseEntity<Page<?>> findAll(Long mobilId,
 										   @PageableDefault(page = 0, size = 10) Pageable pageable) {
-		return ResponseEntity.status (HttpStatus.OK).body(movementService.buscarMovimentacoesDoMobil(mobilId, pageable));
+		return ResponseEntity.status (HttpStatus.OK).body(movementService.buscarMovimentacoesDoMobilFiltro(mobilId, pageable));
 	}
 
 }
