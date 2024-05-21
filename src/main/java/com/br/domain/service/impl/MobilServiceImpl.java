@@ -33,4 +33,10 @@ public class MobilServiceImpl implements MobilService {
 				.orElseThrow(() -> new RuntimeException("Mobil informado não existe."));
 	}
 
+	@Override
+	public Mobil buscarMobil(String siglaMobil) {
+		return mobilRepository.findByMobilPorSigla(siglaMobil)
+				.orElseThrow(() -> new RuntimeException("Mobil informado não existe."));
+	}
+
 }

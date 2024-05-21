@@ -9,6 +9,7 @@ public interface MobilService {
 	Mobil save(Mobil mobil);
 	Page<Mobil> filtro(Pageable pageable) ;
 	Mobil buscarMobil(Long mobilId);
+	Mobil buscarMobil(String sigla);
 
 
 }
