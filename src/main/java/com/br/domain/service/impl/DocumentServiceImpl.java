@@ -57,7 +57,8 @@ public class DocumentServiceImpl implements DocumentService{
         mobil.setUltimaMovimentacaoId(movimentacao.getMovementId());
         mobilRepository.save(mobil);
         document.setMobil(mobil);
-	    Document savedDocument = documentRepository.save(document);
+        preencherModeloDocumento(document);
+        Document savedDocument = documentRepository.save(document);
 	    mobil.setSiglaMobil(getSiglaTemporario());
 	    mobil.setDocumento(savedDocument);
         mobilRepository.save(mobil);
