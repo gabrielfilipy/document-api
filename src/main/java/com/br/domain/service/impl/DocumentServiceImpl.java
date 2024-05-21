@@ -35,11 +35,35 @@ public class DocumentServiceImpl implements DocumentService{
 	private Generator generator;
 	
 	@Override
-	public Document save(Document document) {
-
-        preencherModeloDocumento(document);
-		return documentRepository.save(document);
-	}	
+	public Document save(Document document, Long subscritorId) {
+        Model model = modelRepository.findById(document.getModel().getModelId())
+                                     .orElseThrow(() -> new EntidadeNaoExisteException("Model não encontrado"));
+        Mark mark = markRepository.findByCode(TypeMark.CRIACAO_MARCA.getCode())
+        		.orElseThrow(() -> new EntidadeNaoExisteException("Marca não encontrado"));  
+        document.setModel(model);
+        Mobil mobil = new Mobil();
+        Movement movimentacao = new Movement();
+        mobil.setDateCreate(LocalDateTime.now());
+        mobil.getMarcas().add(mark);
+        mobil.setSubscritorId(subscritorId);
+        movimentacao.getSubscritorId();
+        movimentacao.setMobil(mobil);
+        movimentacao.setPessoaRecebedoraId(movimentacao.getPessoaRecebedoraId());
+        movimentacao.setSubscritorId(movimentacao.getSubscritorId());
+        movimentacao.setTypeMovement(TypeMovement.CRIACAO);	
+        mobil = mobilRepository.save(mobil); 
+        movimentacao = movementRepository.save(movimentacao);
+        movimentacao = movementRepository.findFirstByMobilIdOrderByDataHora(mobil.getMobilId()).get();
+        mobil.setUltimaMovimentacaoId(movimentacao.getMovementId());
+        mobilRepository.save(mobil);
+        document.setMobil(mobil);
+	    Document savedDocument = documentRepository.save(document);
+	    mobil.setSiglaMobil(getSiglaTemporario());
+	    mobil.setDocumento(savedDocument);
+        mobilRepository.save(mobil);
+        savedDocument.setMobil(mobil);
+        return savedDocument;
+	}
 
 	public void preencherModeloDocumento(Document document) {
 
