@@ -9,7 +9,7 @@ public interface ModelService {
 	Model salvar(Model model);
 	Model desactiveModel(Long id);
 	Model activeModel(Long id, Boolean ativo);
-	List<Model> findAll(Specification<Model> spec);
+	List<Model> findAll();
 	Model findById(Long modelId);
 	
 }

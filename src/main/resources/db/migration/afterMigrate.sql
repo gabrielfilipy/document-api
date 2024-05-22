@@ -21,7 +21,15 @@ ALTER TABLE tbl_movement AUTO_INCREMENT = 1;
 
 -- Inserir novos dados
 INSERT INTO tbl_model (model_id, date_time_final, descricao_detalhada, html_form, html_model_doc, label, sigla)
-VALUES (NULL, NULL, 'Memorando é um tipo de documento que trata assuntos internos.', '<input/>', '<!DOCTYPE html>
+VALUES (NULL, NULL, 'Memorando é um tipo de documento que trata assuntos internos.', '<label class="form-label">Assunto</label>
+                                                                                      <input type="text" class="form-control" id="Assunto">
+
+                                                                                      <label class="form-label">Interessado</label>
+                                                                                      <input type="text" class="form-control" id="Interessado">
+                                                                                      <div id="emailHelp" class="form-text">Informe o interessado.</div>
+
+                                                                                      <label for="documentBody" class="form-label">Descrição</label>
+                                                                                      <textarea class="form-control" id="documentBody" rows="3"></textarea>', '<!DOCTYPE html>
                                                                                                   <html lang="en">
                                                                                                   <head>
                                                                                                       <meta charset="UTF-8">
