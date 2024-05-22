@@ -13,6 +13,7 @@ import io.swagger.annotations.*;
 
 @Api(tags = "Documento")
 @RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/v1/documento")
 public class DocumentController {
 

@@ -66,9 +66,20 @@ public class DocumentServiceImpl implements DocumentService{
         return savedDocument;
 	}
 
+	
+	  private static final String TEMPLATE_HTML = "<html><body><h1>Document Information</h1>"
+              + "<p>Document ID: {{documentId}}</p>"
+              + "<p>Description: {{descricao}}</p>"
+              + "<p>Model ID: {{modelId}}</p>"
+              + "<p>Subscritor ID: {{subscritorId}}</p>"
+              + "</body></html>";
+	  
 	public void preencherModeloDocumento(Document document) {
-
-		document.setFile("NOVO HTML DOCUMENTO");
+	    String NewHtmlDocumento = TEMPLATE_HTML.replace("{{documentId}}", document.getDocumentId() != null ? document.getDocumentId().toString() : "N/A")
+                .replace("{{descricao}}", document.getDescricao() != null ? document.getDescricao() : "N/A")
+                .replace("{{modelId}}", document.getModel() != null && document.getModel().getModelId() != null ? document.getModel().getModelId().toString() : "N/A")
+                .replace("{{subscritorId}}", document.getMobil().getSubscritorId() != null ?  document.getMobil().getSubscritorId().toString() : "N/A");
+        document.setFile(NewHtmlDocumento);
 	}
 
 	private String getSiglaFinalizado(Document document) {
