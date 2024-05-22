@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.br.domain.exception.EntidadeNaoExisteException;
+import com.br.domain.exception.MobilNaoExisteException;
 import com.br.domain.model.Mobil;
 import com.br.domain.repository.MobilRepository;
 import com.br.domain.service.*;
@@ -36,7 +37,7 @@ public class MobilServiceImpl implements MobilService {
 	@Override
 	public Mobil buscarMobil(String siglaMobil) {
 		return mobilRepository.findByMobilPorSigla(siglaMobil)
-				.orElseThrow(() -> new RuntimeException("Mobil informado não existe."));
+				.orElseThrow(() -> new MobilNaoExisteException("O Mobil (" + siglaMobil +") informado não existe."));
 	}
 
 }
