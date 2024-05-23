@@ -1,6 +1,8 @@
 package com.br.domain.repository.impl;
 
 import com.br.domain.model.Mobil;
+import com.br.domain.model.Movement;
+import com.br.domain.model.enums.TypeMovement;
 import com.br.domain.repository.MobilRepositoryQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,22 +21,32 @@ public class MobilRepositoryImpl implements MobilRepositoryQuery {
     private EntityManager manager;
 
     @Override
-    public Page<Mobil> buscarMobilsFiltro(Pageable pageable) {
+    public Page<Mobil> buscarMobilsFiltro(Long pessoaRecebedoraId, TypeMovement typeMovement, Pageable pageable) {
         CriteriaBuilder builder = manager.getCriteriaBuilder();
         CriteriaQuery<Mobil> criteria = builder.createQuery(Mobil.class);
         Root<Mobil> root = criteria.from(Mobil.class);
         root.fetch("movimentacoes", JoinType.LEFT);
-        Predicate[] predicates = criarRestricoes(builder, root);
+        Predicate[] predicates = criarRestricoes(pessoaRecebedoraId, typeMovement, builder, root);
         criteria.where(predicates);
         criteria.select(root).distinct(true);
         TypedQuery<Mobil> query = manager.createQuery(criteria);
         adicionarRestricoesDePaginacao(query, pageable);
-        return new PageImpl<>(query.getResultList(), pageable, totalElementos(predicates));
+        return new PageImpl<>(query.getResultList(), pageable, totalElementos(pessoaRecebedoraId, typeMovement));
     }
 
-    private Predicate[] criarRestricoes(CriteriaBuilder builder, Root<Mobil> root) {
+
+    private Predicate[] criarRestricoes(Long pessoaRecebedoraId, TypeMovement typemovement, CriteriaBuilder builder, Root<Mobil> root) {
         List<Predicate> predicates = new ArrayList<>();
-        // Adicione suas restrições aqui, se necessário
+        
+        Join<Mobil, Movement> movement = root.join("movimentacoes");
+
+        if (typemovement != null) {
+            predicates.add(builder.equal(movement.get("typeMovement"), typemovement.getId()));
+        }
+        
+        if (pessoaRecebedoraId != null) {
+            predicates.add(builder.equal(movement.get("pessoaRecebedoraId"), pessoaRecebedoraId));
+        }
 
         return predicates.toArray(new Predicate[0]);
     }
@@ -47,12 +59,14 @@ public class MobilRepositoryImpl implements MobilRepositoryQuery {
         query.setMaxResults(totalRegistrosPorPagina);
     }
 
-    private Long totalElementos(Predicate[] predicates) {
+
+    private Long totalElementos(Long pessoaRecebedoraId, TypeMovement typeMovement) {
         CriteriaBuilder builder = manager.getCriteriaBuilder();
         CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
         Root<Mobil> root = criteria.from(Mobil.class);
+        Predicate[] predicates = criarRestricoes(pessoaRecebedoraId, typeMovement, builder, root);
         criteria.where(predicates);
-        criteria.select(builder.countDistinct(root)); // Conta os resultados distintos
+        criteria.select(builder.count(root));
         return manager.createQuery(criteria).getSingleResult();
     }
 

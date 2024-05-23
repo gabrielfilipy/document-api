@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.br.domain.exception.EntidadeNaoExisteException;
 import com.br.domain.exception.MobilNaoExisteException;
 import com.br.domain.model.Mobil;
+import com.br.domain.model.enums.TypeMovement;
 import com.br.domain.repository.MobilRepository;
 import com.br.domain.service.*;
 
@@ -24,8 +25,8 @@ public class MobilServiceImpl implements MobilService {
 	}
 
 	@Override
-	public Page<Mobil> filtro(Pageable pageable) {
-		return mobilRepository.buscarMobilsFiltro(pageable);
+	public Page<Mobil> filtro(Long pessoaRecebedoraId, TypeMovement typeMovement, Pageable pageable) {
+		return mobilRepository.buscarMobilsFiltro(pessoaRecebedoraId, typeMovement, pageable);
 	}
 
 	@Override
