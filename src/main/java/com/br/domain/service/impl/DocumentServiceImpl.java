@@ -78,7 +78,7 @@ public class DocumentServiceImpl implements DocumentService{
 	    String NewHtmlDocumento = TEMPLATE_HTML.replace("{{documentId}}", document.getDocumentId() != null ? document.getDocumentId().toString() : "N/A")
                 .replace("{{descricao}}", document.getDescricao() != null ? document.getDescricao() : "N/A")
                 .replace("{{modelId}}", document.getModel() != null && document.getModel().getModelId() != null ? document.getModel().getModelId().toString() : "N/A")
-                .replace("{{subscritorId}}", document.getMobil().getSubscritorId() != null ?  document.getMobil().getSubscritorId().toString() : "N/A");
+                .replace("{{subscritorId}}", document.getMobil().getSubscritorId() != null ?  document.getMobil().getSubscritorId() .toString() : "N/A");
         document.setFile(NewHtmlDocumento);
 	}
 

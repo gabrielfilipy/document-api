@@ -40,8 +40,8 @@ public class ModelServiceimpl implements ModelService{
 	}
 
 	@Override
-	public List<Model> findAll(Specification<Model> spec) {
-		return modelRepository.findAll(spec);
+	public List<Model> findAll() {
+		return modelRepository.findAll();
 	}
 
 	@Override
