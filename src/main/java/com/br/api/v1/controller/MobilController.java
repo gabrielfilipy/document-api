@@ -1,6 +1,7 @@
 package com.br.api.v1.controller;
 
 import com.br.domain.model.Mobil;
+import com.br.domain.model.enums.TypeMovement;
 import com.br.domain.service.MobilService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,9 @@ public class MobilController {
     private MobilService mobilService;
 
     @GetMapping("/filtro")
-    public ResponseEntity<Page<Mobil>> getFiltro(@PageableDefault(page = 0, size = 10) Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK).body(mobilService.filtro(pageable));
+    public ResponseEntity<Page<Mobil>> getFiltro(Long pessoaRecebedoraId, TypeMovement typeMovement,
+    											 @PageableDefault(page = 0, size = 10) Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(mobilService.filtro(pessoaRecebedoraId, typeMovement, pageable));
     }
 
     @GetMapping("/buscar/{mobilId}")
