@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.*;
 
 @Getter
@@ -27,6 +28,9 @@ public class Mobil implements Serializable{
     @Column(name = "mobil_id")
 	private Long mobilId;
 
+    @Column(name = "subscritor_id")
+	private Long subscritorId;
+	
     @Column(name = "sigla_mobil")
     private String siglaMobil;
 
@@ -34,7 +38,7 @@ public class Mobil implements Serializable{
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     @CreationTimestamp
     @Column(name = "date_create")
-    private LocalDateTime dateCreate;
+    private OffsetDateTime dateCreate;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "marca_mobil_adicionada",

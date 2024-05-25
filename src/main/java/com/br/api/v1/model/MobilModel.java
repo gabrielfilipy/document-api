@@ -7,10 +7,10 @@ import lombok.Data;
 public class MobilModel {
 	
 	  private Long mobilId;
-	  private MovementModel ultimaMovimentacaoNaoCancelada;
+	  private Long ultimaMovimentacaoId;
 	  private String sigla;
 	  @NotNull
 	  @NotBlank
-	  private Long userId;
+	  private Long subscritorId;
 	    
 }
