@@ -27,6 +27,9 @@ public class Mobil implements Serializable{
     @Column(name = "mobil_id")
 	private Long mobilId;
 
+    @Column(name = "subscritor_id")
+	private Long subscritorId;
+	
     @Column(name = "sigla_mobil")
     private String siglaMobil;
 
