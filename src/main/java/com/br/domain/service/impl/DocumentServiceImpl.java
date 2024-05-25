@@ -42,7 +42,6 @@ public class DocumentServiceImpl implements DocumentService{
 	}	
 
 	public void preencherModeloDocumento(Document document) {
-
 		document.setFile("NOVO HTML DOCUMENTO");
 	}
 
