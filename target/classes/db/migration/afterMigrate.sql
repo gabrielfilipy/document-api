@@ -143,8 +143,8 @@ VALUES (NULL, NULL, 'Memorando é um tipo de documento que trata assuntos intern
 INSERT INTO tbl_mark (mark_id, code, desc_detalhada, nome, tipo_marca)
 VALUES (NULL, 1, 'Descricao', 'Criacao', 1);
 
-INSERT INTO tbl_mobil (mobil_id, date_create, sigla_mobil, subscritor_id)
-VALUES (NULL, NOW(), 'MEM', 1);
+INSERT INTO tbl_mobil (mobil_id, date_create, sigla_mobil)
+VALUES (NULL, NOW(), 'MEM');
 
 INSERT INTO tbl_document (document_id, descricao, file, mobil_mobil_id, model_id)
 VALUES (NULL, 'Descrição', 'File', 1, 1);

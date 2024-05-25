@@ -2,30 +2,30 @@ package com.br.domain.model.enums;
 
 public enum TypeMovement{
 
-	CRIACAO(1, "Criação"),
+	CRIACAO(0, "Criação"),
 	//
-	ANEXACAO(2, "Anexação"),
+	ANEXACAO(1, "Anexação"),
 	//
-	TRANSFERENCIA(3, "Transferência"),
+	TRANSFERENCIA(2, "Transferência"),
 	//
-	RECEBIMENTO(4, "Recebimento"),
+	RECEBIMENTO(3, "Recebimento"),
 	//
-	DESPACHO(5, "Despacho"),
+	DESPACHO(4, "Despacho"),
 	//
-	DESPACHO_TRANSFERENCIA(6, "Despacho com Transferência"),
+	DESPACHO_TRANSFERENCIA(5, "Despacho com Transferência"),
 	//
-	DESPACHO_INTERNO(7, "Despacho Interno"),
+	DESPACHO_INTERNO(6, "Despacho Interno"),
 	//
-	DESPACHO_INTERNO_TRANSFERENCIA(8, "Despacho Interno com Transferência"),
+	DESPACHO_INTERNO_TRANSFERENCIA(7, "Despacho Interno com Transferência"),
 	//
-	ARQUIVAMENTO_CORRENTE(9, "Arquivamento Corrente"),
+	ARQUIVAMENTO_CORRENTE(8, "Arquivamento Corrente"),
 	//
 	// TODO: remover o teste da existencia de tipo de movimentacao de eliminacao
 	// na hora da busca, pois isso aumenta muito o tempo do query. Se for o
 	// caso, criar um DNM_ELIMINADO.
-	ELIMINACAO(10, "Eliminação"),
+	ELIMINACAO(9, "Eliminação"),
 	//
-	ASSINATURA_DIGITAL_DOCUMENTO(11, "Assinatura"),
+	ASSINATURA_DIGITAL_DOCUMENTO(10, "Assinatura"),
 	//
 	JUNTADA(11, "Juntada"),
 	//

@@ -26,13 +26,11 @@ public class DocumentController {
 	@Autowired
 	private DocumentModelMapperBack documentModelMapperBack;
 	
-	@PostMapping("/cadastrar/{subscritorId}")
+	@PostMapping("/cadastrar")
 	public ResponseEntity<DocumentModel> cadastrar(@RequestBody @Valid 
-		DocumentModelInput documentModelInput,
-		@PathVariable Long subscritorId
-        ) { System.out.println(documentModelInput.getSubscritorId());
+		DocumentModelInput documentModelInput) {
         Document document = documentModelMapperBack.toModel(documentModelInput);
-        Document savedDocument = documentService.save(document, subscritorId);
+        Document savedDocument = documentService.save(document);
         DocumentModel documentModel = documentModelMapper.toModel(savedDocument);
         return ResponseEntity.status(HttpStatus.CREATED).body(documentModel);
     }

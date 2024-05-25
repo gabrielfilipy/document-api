@@ -5,9 +5,10 @@ import com.br.domain.model.Document;
 
 public interface DocumentService {
 
-	Document save(Document document, Long subscritorId );
+	Document save(Document document);
 	List<Document> findAll();
 	Document findById(Long id);
+
 //	Document activateUser(Long id);
 	
 }
