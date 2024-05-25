@@ -9,7 +9,7 @@ import org.springframework.data.domain.Pageable;
 public interface MobilService {
 
 	Mobil save(Mobil mobil);
-	Page<Mobil> filtro(Long pessoaRecebedoraId, TypeMovement typeMovement, Pageable pageable);
+	Page<Mobil> filtro(Long subscritorId, Long pessoaRecebedoraId, TypeMovement typeMovement, Pageable pageable);
 	Mobil buscarMobil(Long mobilId);
 	Mobil buscarMobil(String sigla);
 

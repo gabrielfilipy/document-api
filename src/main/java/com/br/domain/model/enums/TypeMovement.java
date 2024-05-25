@@ -2,7 +2,7 @@ package com.br.domain.model.enums;
 
 public enum TypeMovement{
 
-	CRIACAO(1, "Criação"),
+	CRIACAO(1, "CRIACAO"),
 	//
 	ANEXACAO(2, "Anexação"),
 	//

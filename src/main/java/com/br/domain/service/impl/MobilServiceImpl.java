@@ -25,8 +25,8 @@ public class MobilServiceImpl implements MobilService {
 	}
 
 	@Override
-	public Page<Mobil> filtro(Long pessoaRecebedoraId, TypeMovement typeMovement, Pageable pageable) {
-		return mobilRepository.buscarMobilsFiltro(pessoaRecebedoraId, typeMovement, pageable);
+	public Page<Mobil> filtro(Long subscritorId, Long pessoaRecebedoraId, TypeMovement typeMovement, Pageable pageable) {
+		return mobilRepository.buscarMobilsFiltro(subscritorId, pessoaRecebedoraId, typeMovement, pageable);
 	}
 
 	@Override

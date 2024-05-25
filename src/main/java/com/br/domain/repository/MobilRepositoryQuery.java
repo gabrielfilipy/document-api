@@ -8,6 +8,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface MobilRepositoryQuery {
 
-	Page<Mobil> buscarMobilsFiltro(Long pessoaRecebedoraId, TypeMovement typeMovement, Pageable pageable);
+	Page<Mobil> buscarMobilsFiltro(Long subscritorId, Long pessoaRecebedoraId, TypeMovement typeMovement, Pageable pageable);
 
 }

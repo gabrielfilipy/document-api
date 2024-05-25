@@ -7,8 +7,9 @@ import lombok.*;
 @Setter
 public class DocumentModelInput {
 
+	private Long documentId;
 	private Long subscritorId;
 	private String descricao;
-	private String file;
     private ModelModel model;
+
 }

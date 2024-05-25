@@ -21,29 +21,33 @@ public class MobilRepositoryImpl implements MobilRepositoryQuery {
     private EntityManager manager;
 
     @Override
-    public Page<Mobil> buscarMobilsFiltro(Long pessoaRecebedoraId, TypeMovement typeMovement, Pageable pageable) {
+    public Page<Mobil> buscarMobilsFiltro(Long subscritorId, Long pessoaRecebedoraId, TypeMovement typeMovement, Pageable pageable) {
         CriteriaBuilder builder = manager.getCriteriaBuilder();
         CriteriaQuery<Mobil> criteria = builder.createQuery(Mobil.class);
         Root<Mobil> root = criteria.from(Mobil.class);
         root.fetch("movimentacoes", JoinType.LEFT);
-        Predicate[] predicates = criarRestricoes(pessoaRecebedoraId, typeMovement, builder, root);
+        Predicate[] predicates = criarRestricoes(subscritorId, pessoaRecebedoraId, typeMovement, builder, root);
         criteria.where(predicates);
         criteria.select(root).distinct(true);
         TypedQuery<Mobil> query = manager.createQuery(criteria);
         adicionarRestricoesDePaginacao(query, pageable);
-        return new PageImpl<>(query.getResultList(), pageable, totalElementos(pessoaRecebedoraId, typeMovement));
+        return new PageImpl<>(query.getResultList(), pageable, totalElementos(subscritorId, pessoaRecebedoraId, typeMovement));
     }
 
 
-    private Predicate[] criarRestricoes(Long pessoaRecebedoraId, TypeMovement typemovement, CriteriaBuilder builder, Root<Mobil> root) {
+    private Predicate[] criarRestricoes(Long subscritorId, Long pessoaRecebedoraId, TypeMovement typemovement, CriteriaBuilder builder, Root<Mobil> root) {
         List<Predicate> predicates = new ArrayList<>();
         
         Join<Mobil, Movement> movement = root.join("movimentacoes");
 
-        if (typemovement != null) {
-            predicates.add(builder.equal(movement.get("typeMovement"), typemovement.getId()));
+        if (subscritorId != null && typemovement != null) {
+            predicates.add(builder.equal(root.get("subscritorId"), subscritorId));
         }
-        
+
+        if (typemovement != null) {
+            predicates.add(builder.equal(movement.get("typeMovement"), typemovement));
+        }
+
         if (pessoaRecebedoraId != null) {
             predicates.add(builder.equal(movement.get("pessoaRecebedoraId"), pessoaRecebedoraId));
         }
@@ -60,11 +64,11 @@ public class MobilRepositoryImpl implements MobilRepositoryQuery {
     }
 
 
-    private Long totalElementos(Long pessoaRecebedoraId, TypeMovement typeMovement) {
+    private Long totalElementos(Long subscritorId, Long pessoaRecebedoraId, TypeMovement typeMovement) {
         CriteriaBuilder builder = manager.getCriteriaBuilder();
         CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
         Root<Mobil> root = criteria.from(Mobil.class);
-        Predicate[] predicates = criarRestricoes(pessoaRecebedoraId, typeMovement, builder, root);
+        Predicate[] predicates = criarRestricoes(subscritorId, pessoaRecebedoraId, typeMovement, builder, root);
         criteria.where(predicates);
         criteria.select(builder.count(root));
         return manager.createQuery(criteria).getSingleResult();

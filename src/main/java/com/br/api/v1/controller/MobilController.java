@@ -22,9 +22,9 @@ public class MobilController {
     private MobilService mobilService;
 
     @GetMapping("/filtro")
-    public ResponseEntity<Page<Mobil>> getFiltro(Long pessoaRecebedoraId, TypeMovement typeMovement,
+    public ResponseEntity<Page<Mobil>> getFiltro(Long subscritorId, Long pessoaRecebedoraId, TypeMovement typeMovement,
     											 @PageableDefault(page = 0, size = 10) Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK).body(mobilService.filtro(pessoaRecebedoraId, typeMovement, pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(mobilService.filtro(subscritorId, pessoaRecebedoraId, typeMovement, pageable));
     }
 
     @GetMapping("/buscar/{mobilId}")
