@@ -12,7 +12,7 @@ spring:
       dialect: org.hibernate.dialect.MySQLDialect
 
 flyway:
-  locations: classpath:db/migration,classpath:db/data
+  locations: classpath:db/migration
   baseline-on-migrate: true
 
 jackson:
