@@ -1,10 +1,7 @@
 package com.br.domain.service.impl;
 
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.time.*;
+import java.time.format.*;
 import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,10 +53,9 @@ public class DocumentServiceImpl implements DocumentService {
 		Model model = modelRepository.findById(document.getModel().getModelId())
 				.orElseThrow(() -> new EntidadeNaoExisteException("Model não encontrado"));
 		document.setModel(model);
-
+		
 		// Salvar o documento primeiro para obter o ID
 		Document savedDocument = documentRepository.save(document);
-
 		// Criar e salvar Mobil associando o documento salvo
 		Mobil mobil = new Mobil();
 		mobil.setDateCreate(OffsetDateTime.now());
@@ -71,7 +67,7 @@ public class DocumentServiceImpl implements DocumentService {
 		Movement movimentacao = new Movement();
 		movimentacao.setSubscritorId(subscritorId);
 		movimentacao.setMobil(mobil);
-		//TODO: Verificar o por que não está salvando o tipo da movimentação.
+
 		movimentacao.setTypeMovement(TypeMovement.CRIACAO);
 
 		movimentacao = movementRepository.save(movimentacao);
@@ -94,22 +90,26 @@ public class DocumentServiceImpl implements DocumentService {
 		return savedDocument;
 	}
 
-
 	public void preencherModeloDocumento(Document document) {
 		String content = document.getModel().getHtmlModelDoc();
 		Optional<Movement> ultMovimentacaoAssinada = movementRepository
 				.ultimaMovimentacaoAssinada(document.getMobil().getUltimaMovimentacaoId());
 		String descricaoDocumento = document.getDescricao();
+		
 		User user = userFeignClient.getUserId(document.getMobil().getSubscritorId());
 		Department department = departmentFeignClient.getDepartment(user.getDepartmentId());
-
+        
 		String dataCriacao = document.getMobil().getDateCreate() + "";
 		descricaoDocumento += "#DataCriacaoDocumento=" + formatarData(dataCriacao);
-
+        
 		if (ultMovimentacaoAssinada.isPresent()) {
-			descricaoDocumento += "#DataAssinatura=" + ultMovimentacaoAssinada.get().getDataHoraCricao();
+			User subscritor = userFeignClient.getUserId(ultMovimentacaoAssinada.get().getSubscritorId());
+			Department departmentSubscritor = departmentFeignClient.getDepartment(subscritor.getDepartmentId());
+			descricaoDocumento += "#PessoaQueAssinante=" + subscritor.getNome();
+			descricaoDocumento += "#SecretariaPessoaAssinante=" + departmentSubscritor.getNome();
+		 	descricaoDocumento += "#DataAssinatura=" + formatarData(ultMovimentacaoAssinada.get().getDataHoraCricao() + "");
 		}
-
+		      
 		if (department != null) {
 			descricaoDocumento += "#SecretariaCriacaoDocumento=" + department.getNome();
 		}
