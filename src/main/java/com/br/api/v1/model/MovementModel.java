@@ -10,6 +10,6 @@ public class MovementModel {
     private Long movementId;
     private Long subscritor;
     private LocalDateTime dataHora;
-    private ModelModel siglaModel;
+    private ModelModel model;
 
 }
