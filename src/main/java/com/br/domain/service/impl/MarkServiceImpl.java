@@ -1,9 +1,9 @@
 package com.br.domain.service.impl;
 
-import java.util.Optional;
+import com.br.domain.exception.MarkNaoExisteException;
+import com.br.domain.model.enums.TipoMarca;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.br.domain.exception.EntidadeNaoExisteException;
 import com.br.domain.model.*;
 import com.br.domain.model.enums.TypeMovement;
 import com.br.domain.repository.*;
@@ -23,19 +23,27 @@ public class MarkServiceImpl implements MarkService {
 
 	@Override
 	public Mark save(Mark mark) {
-	        Mark marcaSalvar = markRepository.save(mark);
-	        Movement movimentacao = new Movement();
-	        movimentacao.setTypeMovement(TypeMovement.CRIACAO);	 
-	        movementRepository.save(movimentacao);
-		    return  marcaSalvar;
+		Mark marcaSalvar = markRepository.save(mark);
+		Movement movimentacao = new Movement();
+		movimentacao.setTypeMovement(TypeMovement.CRIACAO);
+		movementRepository.save(movimentacao);
+		return  marcaSalvar;
 	}
 
 	@Override
 	public Mark findById(Long markId) {
-			Optional<Mark> mark = markRepository.findById(markId);
-			if(mark.isEmpty()) {
-				throw new EntidadeNaoExisteException("Marca informada não existe: " + markId);
-			}
-			return mark.get();
-		}
+		return markRepository.findById(markId).orElseThrow(() -> new MarkNaoExisteException(markId));
+	}
+
+	@Override
+	public Mark findByCode(Long code) {
+		return null;
+	}
+
+	@Override
+	public Mark findByTypeMark(TipoMarca tipoMarca) {
+		return markRepository.findByTypeMark(tipoMarca)
+				.orElseThrow(() -> new MarkNaoExisteException("O tipo de Marca informado não foi encontrado: " + tipoMarca.name()));
+	}
+
 }

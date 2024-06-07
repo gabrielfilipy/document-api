@@ -1,7 +1,7 @@
 package com.br.api.v1.model;
 
 import com.br.domain.model.Movement;
-import com.br.domain.model.enums.TypeMark;
+import com.br.domain.model.enums.TipoMarca;
 import lombok.*;
 
 @Getter
@@ -13,5 +13,5 @@ public class MarkModel {
 	    private String descricaoDetalhada;
 	    private Long code;
 		private Movement movimentacao;
-	    private TypeMark typeMark;
+	    private TipoMarca tipoMarca;
 }

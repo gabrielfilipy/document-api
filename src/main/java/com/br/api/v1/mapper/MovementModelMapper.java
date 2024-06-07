@@ -1,23 +1,21 @@
 package com.br.api.v1.mapper;
 
-import java.util.List;
-
+import com.br.api.v1.model.MovimentacaoAssinadaModel;
+import com.br.domain.model.Movement;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.br.api.v1.model.MovementModel;
-import com.br.domain.model.Movement;
-
 @Component
 public class MovementModelMapper {
+
 	@Autowired
 	private ModelMapper modelMapper;
-	
-	public MovementModel toModelMovement(List<Movement> movimentacoes) {
-		MovementModel movementModel =
-				modelMapper.map( movimentacoes, MovementModel.class);
-				return movementModel;
+
+	public MovimentacaoAssinadaModel toModelMovAssinada(Movement movement) {
+		MovimentacaoAssinadaModel movimentacaoAssinadaModel = modelMapper.map(movement, MovimentacaoAssinadaModel.class);
+		// Aqui você pode fazer ajustes adicionais, se necessário
+		return movimentacaoAssinadaModel;
 	}
 
 }

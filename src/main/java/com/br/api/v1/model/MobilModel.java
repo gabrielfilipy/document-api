@@ -8,7 +8,7 @@ public class MobilModel {
 	
 	  private Long mobilId;
 	  private Long ultimaMovimentacaoId;
-	  private String sigla;
+	  private String siglaMobil;
 	  @NotNull
 	  @NotBlank
 	  private Long subscritorId;

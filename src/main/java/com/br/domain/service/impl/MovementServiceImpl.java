@@ -1,10 +1,15 @@
 package com.br.domain.service.impl;
 
-import java.util.List;
 import java.util.Optional;
 
+import com.br.domain.exception.MobilNaoExisteException;
+import com.br.domain.exception.MovimentacaoExistenteException;
+import com.br.domain.model.Document;
 import com.br.domain.model.Mobil;
+import com.br.domain.model.enums.TipoMarca;
+import com.br.domain.model.enums.TypeMovement;
 import com.br.domain.repository.MobilRepository;
+import com.br.domain.service.MobilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,9 +29,45 @@ public class MovementServiceImpl implements MovementService {
 	@Autowired
 	private MobilRepository mobilRepository;
 
+	@Autowired
+	private MobilService mobilService;
+
 	@Override
 	public Movement save(Movement movimentacao) {
 	    return movementRepository.save(movimentacao);
+	}
+
+	@Override
+	public Movement verificarSeOSubscritorAssinou(String siglaMobil, Long subscritorId) {
+		Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
+
+		if(!mobil.isPresent()) {
+			throw new MobilNaoExisteException("Mobil informado não existe.");
+		}
+
+		for(Movement movement: mobil.get().getMovimentacoes()) {
+			if((movement.getTypeMovement() == TypeMovement.ASSINATURA_COM_SENHA) &&
+					(movement.getSubscritorId() == subscritorId)) {
+				return movement;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Movement criarMovimentacaoAssinarComSenha(String siglaMobil, Long subscritorId) {
+		Movement movement = verificarSeOSubscritorAssinou(siglaMobil, subscritorId);
+
+		if(movement != null) {
+			throw new MovimentacaoExistenteException(movement.getMovementId());
+		}
+
+		Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
+		mobilService.atribuirMarcaAoMobil(mobil.get(), TipoMarca.INCLUSAO_COSSIGNATARIO);
+		movement = criarMovimentacao(TypeMovement.ASSINATURA_COM_SENHA, subscritorId, null, mobil.get());
+		mobilService.atualizarSiglaDoMobil(mobil.get());
+
+		return movement;
 	}
 
 	@Override
@@ -46,6 +87,16 @@ public class MovementServiceImpl implements MovementService {
 	@Override
 	public Page<Movement> buscarMovimentacoesDoMobilFiltro(Long mobilId, Pageable pageable) {
 		return movementRepository.buscarMovimentacoesDoMobilFiltro(mobilId, pageable);
+	}
+
+	@Override
+	public Movement criarMovimentacao(TypeMovement typeMovement, Long subscritorId, Long pessoaRecebedoraId, Mobil mobil) {
+		Movement movimentacao = new Movement();
+		movimentacao.setSubscritorId(subscritorId);
+		movimentacao.setPessoaRecebedoraId(pessoaRecebedoraId);
+		movimentacao.setMobil(mobil);
+		movimentacao.setTypeMovement(typeMovement);
+		return movementRepository.save(movimentacao);
 	}
 
 }

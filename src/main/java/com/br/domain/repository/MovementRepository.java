@@ -21,4 +21,5 @@ public interface MovementRepository extends JpaRepository<Movement, Long>,
 
 	@Query("SELECT m FROM Movement m WHERE m.typeMovement = 1 AND m.dataHoraFinalizacao != null AND m.movementId = :ultimaMovimentacaoId")
 	Optional<Movement> ultimaMovimentacaoAssinada(Long ultimaMovimentacaoId);
+
 }

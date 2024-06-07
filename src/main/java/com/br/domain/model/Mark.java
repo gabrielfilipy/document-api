@@ -3,7 +3,7 @@ package com.br.domain.model;
 import lombok.*;
 import java.io.Serializable;
 import javax.persistence.*;
-import com.br.domain.model.enums.TypeMark;
+import com.br.domain.model.enums.TipoMarca;
 
 @Getter
 @Setter
@@ -31,6 +31,6 @@ public class Mark implements Serializable{
     
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "tipo_marca")
-    private TypeMark typeMark;
+    private TipoMarca tipoMarca;
 
 }
