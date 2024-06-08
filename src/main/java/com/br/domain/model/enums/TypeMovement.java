@@ -124,8 +124,7 @@ public enum TypeMovement{
 	PENDENCIA_DE_ANEXACAO(57, "Pendência de Anexação"),
 	//
 	ASSINATURA_COM_SENHA(58, "Assinatura com senha"),
-	//
-	ASSINATURA_MOVIMENTACAO_COM_SENHA(59, "Assinatura de movimentação com senha"),
+	TRAMITE_PARA_PESSOA(58, "Tramite para pessoa"),
 	//
 	CONFERENCIA_COPIA_COM_SENHA(60, "Autenticação de Documento com senha"),
 	//

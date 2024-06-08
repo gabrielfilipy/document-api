@@ -4,7 +4,9 @@ import com.br.api.v1.mapper.MobilModelMapper;
 import com.br.api.v1.model.MobilModel;
 import com.br.api.v1.model.MovementModel;
 import com.br.api.v1.model.MovimentacaoAssinadaModel;
+import com.br.api.v1.model.TramiteDocPessoaModel;
 import com.br.api.v1.model.input.MovementAssSenhaInput;
+import com.br.api.v1.model.input.TramiteDocPessoaModelInput;
 import com.br.domain.model.Mobil;
 import com.br.domain.service.MobilService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +56,21 @@ public class MovementController {
 		return ResponseEntity.status(HttpStatus.OK).body(movimentacaoAssinadaModel1);
 	}
 
+	@PostMapping("/tramitar/{siglaDocumento}/pessoa")
+	public ResponseEntity<TramiteDocPessoaModel> tramitaDocumento(
+			@PathVariable(name = "siglaDocumento") String siglaDocumento,
+			@RequestBody TramiteDocPessoaModelInput tramiteDocPessoaModelInput) {
+		Movement movement = movementService.criarMovimentacaoTramitarDocumentoPessoa(
+														siglaDocumento,
+														tramiteDocPessoaModelInput.getSubscritorId(),
+														tramiteDocPessoaModelInput.getPessoaRecebedoraId());
+		Mobil mobil = mobilService.buscarMobil(movement.getMobil().getMobilId());
+
+		TramiteDocPessoaModel TramiteDocPessoaModel1 = movementModelMapper.toModelTramiteDocPessoa(movement);
+
+		MobilModel mobilModel = mobilModelMapper.toModel(mobil);
+		TramiteDocPessoaModel1.setMobilModel(mobilModel);
+		return ResponseEntity.status(HttpStatus.OK).body(TramiteDocPessoaModel1);
+	}
 
 }
