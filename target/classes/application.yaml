@@ -10,6 +10,8 @@ spring:
     hibernate:
       #ddl-auto: update
       dialect: org.hibernate.dialect.MySQLDialect
+  show-sql:
+    true
 
 flyway:
   locations: classpath:db/migration

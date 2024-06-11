@@ -64,7 +64,7 @@ public class MovementController {
 														siglaDocumento,
 														tramiteDocPessoaModelInput.getSubscritorId(),
 														tramiteDocPessoaModelInput.getPessoaRecebedoraId());
-		Mobil mobil = mobilService.buscarMobil(movement.getMobil().getMobilId());
+		Mobil mobil = mobilService.buscarMobil(movement.getMobil().getSiglaMobil());
 
 		TramiteDocPessoaModel TramiteDocPessoaModel1 = movementModelMapper.toModelTramiteDocPessoa(movement);
 

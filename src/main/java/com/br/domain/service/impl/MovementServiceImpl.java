@@ -1,7 +1,5 @@
 package com.br.domain.service.impl;
 
-import java.util.Optional;
-
 import com.br.domain.exception.EntidadeNaoExisteException;
 import com.br.domain.exception.MovimentacaoExistenteException;
 import com.br.domain.model.Mobil;
@@ -39,7 +37,7 @@ public class MovementServiceImpl implements MovementService {
 
 	@Override
 	public Movement save(Movement movimentacao) {
-	    return movementService.save(movimentacao);
+	    return movementRepository.save(movimentacao);
 	}
 
 	public Movement verificarSePessoaRecebedoraAssinou(String siglaMobil, Long subscritorId, Long pessoaRecebedoraId) {
@@ -123,8 +121,7 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	private Mobil buscarMobil(String siglaMobil) {
-		mobilService.buscarMobil(siglaMobil);
-				throw new EntidadeNaoExisteException("O Mobil (" + siglaMobil +") informado não existe.");
+		return mobilService.buscarMobil(siglaMobil);
 	}
 
 }

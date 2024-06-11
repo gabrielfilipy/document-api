@@ -18,7 +18,7 @@ public interface MobilRepository extends JpaRepository<Mobil, Long>,
 	Optional<Mobil> findByIdWithMovimentacoes(@Param("mobilId") Long mobilId);
 
 	@Query("SELECT m FROM Mobil m LEFT JOIN FETCH m.movimentacoes WHERE m.siglaMobil = :siglaMobil")
-	Optional<Mobil> findByMobilPorSigla(@Param("sigla") String siglaMobil);
+	Optional<Mobil> findByMobilPorSigla(@Param("siglaMobil") String siglaMobil);
 
 	Optional<Mobil> findById(Long mobilId);
 

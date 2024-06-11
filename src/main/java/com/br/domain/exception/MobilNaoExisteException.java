@@ -9,7 +9,7 @@ public class MobilNaoExisteException extends EntidadeNaoExisteException{
 	}
 	
 	public MobilNaoExisteException(Long mobilId, String siglaMobil) {
-		this("O documento informado " + siglaMobil + " não existe");
+		this("O mobil informado " + siglaMobil + " não existe");
 	}
 
 }
