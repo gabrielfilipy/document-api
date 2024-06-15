@@ -6,6 +6,9 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+
+import com.br.infrastructure.external.service.governmentagency.GovernmentAgencyFeignClient;
+import com.br.infrastructure.external.service.governmentagency.model.Orgao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +51,9 @@ public class DocumentServiceImpl implements DocumentService {
 
 	@Autowired
 	private UserFeignClient userFeignClient;
+
+	@Autowired
+	private GovernmentAgencyFeignClient governmentAgencyFeignClient;
 
 	@Transactional
 	@Override
@@ -102,12 +108,24 @@ public class DocumentServiceImpl implements DocumentService {
 		String descricaoDocumento = document.getDescricao();
 		User user = userFeignClient.getUserId(document.getMobil().getSubscritorId());
 		Department department = departmentFeignClient.getDepartment(user.getDepartmentId());
-
+		Orgao orgao = governmentAgencyFeignClient.getOrgaoId(department.getOrgaoId());
 		String dataCriacao = document.getMobil().getDateCreate() + "";
-		descricaoDocumento += "#DataCriacaoDocumento=" + formatarData(dataCriacao);
 
-		if (ultMovimentacaoAssinada.isPresent()) {
-			descricaoDocumento += "#DataAssinatura=" + ultMovimentacaoAssinada.get().getDataHoraCricao();
+		descricaoDocumento += "#DataCriacaoDocumento=" + formatarData(dataCriacao);
+		descricaoDocumento += "#Orgao=" + orgao.getNome();
+		descricaoDocumento += "#SecretariaPessoaCriadora=" + department.getNome();
+
+		if(ultMovimentacaoAssinada.isPresent()) {
+			User subscritor = userFeignClient.getUserId(ultMovimentacaoAssinada.get().getSubscritorId());
+			Department departmentSubscritor = departmentFeignClient.getDepartment(subscritor.getDepartmentId());
+			descricaoDocumento += "#PessoaAssinante=" + subscritor.getNome();
+			descricaoDocumento += "#SecretariaPessoaAssinante=" + departmentSubscritor.getNome();
+			descricaoDocumento += "#DataAssinatura=" + formatarData(ultMovimentacaoAssinada.get().getDataHoraCricao() + "");
+		} else {
+			//Se nâo possuir data de assinatura então grave as informações do subscritor o qual criou o documento.
+			descricaoDocumento += "#PessoaAssinante=" + user.getNome();
+			descricaoDocumento += "#SecretariaPessoaAssinante=" + department.getNome();
+			descricaoDocumento += "#DataAssinatura=" + formatarData(dataCriacao);
 		}
 
 		if (department != null) {

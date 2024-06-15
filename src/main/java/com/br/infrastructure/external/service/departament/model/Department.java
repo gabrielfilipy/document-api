@@ -8,7 +8,7 @@ import lombok.Setter;
 public class Department {
 
 	private Long id;
-	private String orgao;
+	private Long orgaoId;
 	private String nome;
 	private String sigla;
 	private String unidadePai;
