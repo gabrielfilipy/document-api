@@ -55,6 +55,23 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	@Override
+	public Movement buscarPorCossignatario(String siglaMobil, Long pessoaRecebedoraId) {
+		Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
+
+		if(!mobil.isPresent()) {
+			throw new MobilNaoExisteException("Mobil informado não existe.");
+		}
+
+		for(Movement movement: mobil.get().getMovimentacoes()) {
+			if((movement.getTypeMovement() == TypeMovement.INCLUSAO_DE_COSIGNATARIO) &&
+					(movement.getSubscritorId() == pessoaRecebedoraId)) {
+				return movement;
+			}
+		}
+		return null;
+	}
+
+	@Override
 	public Movement criarMovimentacaoAssinarComSenha(String siglaMobil, Long subscritorId) {
 		Movement movement = verificarSeOSubscritorAssinou(siglaMobil, subscritorId);
 
@@ -63,8 +80,24 @@ public class MovementServiceImpl implements MovementService {
 		}
 
 		Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
-		mobilService.atribuirMarcaAoMobil(mobil.get(), TipoMarca.INCLUSAO_COSSIGNATARIO);
+		mobilService.atribuirMarcaAoMobil(mobil.get(), TipoMarca.ASSINAR_COM_SENHA);
 		movement = criarMovimentacao(TypeMovement.ASSINATURA_COM_SENHA, subscritorId, null, mobil.get());
+		mobilService.atualizarSiglaDoMobil(mobil.get());
+
+		return movement;
+	}
+
+	@Override
+	public Movement criarMovimentacaoIncluirCossignatario(String siglaMobil, Long subscritorId, Long pessoaRecebedoraId) {
+		Movement movement = buscarPorCossignatario(siglaMobil, pessoaRecebedoraId);
+
+		if(movement != null) {
+			throw new MovimentacaoExistenteException(movement.getMovementId());
+		}
+
+		Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
+		mobilService.atribuirMarcaAoMobil(mobil.get(), TipoMarca.INCLUSAO_COSSIGNATARIO);
+		movement = criarMovimentacao(TypeMovement.INCLUSAO_DE_COSIGNATARIO, subscritorId, pessoaRecebedoraId, mobil.get());
 		mobilService.atualizarSiglaDoMobil(mobil.get());
 
 		return movement;

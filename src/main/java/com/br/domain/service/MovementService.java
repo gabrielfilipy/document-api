@@ -3,15 +3,16 @@ package com.br.domain.service;
 import com.br.domain.model.Mobil;
 import com.br.domain.model.Movement;
 import com.br.domain.model.enums.TypeMovement;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 
 public interface MovementService {
 	
 	Movement save(Movement movimentacao);
-	Movement verificarSeOSubscritorAssinou(String siglaDocumento, Long subscritorId);
-	Movement criarMovimentacaoAssinarComSenha(String siglaDocumento, Long subscritorId);
+	Movement verificarSeOSubscritorAssinou(String siglaMobil, Long subscritorId);
+	Movement buscarPorCossignatario(String siglaMobil, Long pessoaRecebedoraId);
+	Movement criarMovimentacaoAssinarComSenha(String siglaMobil, Long subscritorId);
+	Movement criarMovimentacaoIncluirCossignatario(String siglaMobil, Long subscritorId, Long pessoaRecebedoraId);
 	Movement findById(Long movimentacaoId);
 	Movement criarMovimentacao(TypeMovement typeMovement, Long subscritorId, Long pessoaRecebedoraId, Mobil mobil);
 	Page<Movement> findAll(Specification<Movement> spec, Pageable pageable);
