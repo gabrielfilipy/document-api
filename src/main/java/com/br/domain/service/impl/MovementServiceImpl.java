@@ -2,9 +2,9 @@ package com.br.domain.service.impl;
 
 import java.util.Optional;
 
+import com.br.domain.exception.DocumentoNaoFinalizadoException;
 import com.br.domain.exception.MobilNaoExisteException;
 import com.br.domain.exception.MovimentacaoExistenteException;
-import com.br.domain.model.Document;
 import com.br.domain.model.Mobil;
 import com.br.domain.model.enums.TipoMarca;
 import com.br.domain.model.enums.TypeMovement;
@@ -38,7 +38,7 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	@Override
-	public Movement verificarSeOSubscritorAssinou(String siglaMobil, Long subscritorId) {
+	public Movement verificaAssinaturaDoSubscritor(String siglaMobil, Long subscritorId) {
 		Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
 
 		if(!mobil.isPresent()) {
@@ -48,6 +48,23 @@ public class MovementServiceImpl implements MovementService {
 		for(Movement movement: mobil.get().getMovimentacoes()) {
 			if((movement.getTypeMovement() == TypeMovement.ASSINATURA_COM_SENHA) &&
 					(movement.getSubscritorId() == subscritorId)) {
+				return movement;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Movement verificaFinalizacaoDoDocumento(String siglaMobil) {
+		Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
+
+		if(!mobil.isPresent()) {
+			throw new MobilNaoExisteException("Mobil informado não existe.");
+		}
+
+		//Verifica se há algum tipo de movimentação do tipo FINALIZACAO.
+		for(Movement movement: mobil.get().getMovimentacoes()) {
+			if(movement.getTypeMovement() == TypeMovement.FINALIZACAO) {
 				return movement;
 			}
 		}
@@ -73,7 +90,7 @@ public class MovementServiceImpl implements MovementService {
 
 	@Override
 	public Movement criarMovimentacaoAssinarComSenha(String siglaMobil, Long subscritorId) {
-		Movement movement = verificarSeOSubscritorAssinou(siglaMobil, subscritorId);
+		Movement movement = verificaAssinaturaDoSubscritor(siglaMobil, subscritorId);
 
 		if(movement != null) {
 			throw new MovimentacaoExistenteException(movement.getMovementId());
@@ -93,6 +110,10 @@ public class MovementServiceImpl implements MovementService {
 
 		if(movement != null) {
 			throw new MovimentacaoExistenteException(movement.getMovementId());
+		}
+
+		if(verificaFinalizacaoDoDocumento(siglaMobil) == null) {
+			throw new DocumentoNaoFinalizadoException(siglaMobil, null);
 		}
 
 		Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);

@@ -9,7 +9,8 @@ import org.springframework.data.jpa.domain.Specification;
 public interface MovementService {
 	
 	Movement save(Movement movimentacao);
-	Movement verificarSeOSubscritorAssinou(String siglaMobil, Long subscritorId);
+	Movement verificaAssinaturaDoSubscritor(String siglaMobil, Long subscritorId);
+	Movement verificaFinalizacaoDoDocumento(String siglaMobil);
 	Movement buscarPorCossignatario(String siglaMobil, Long pessoaRecebedoraId);
 	Movement criarMovimentacaoAssinarComSenha(String siglaMobil, Long subscritorId);
 	Movement criarMovimentacaoIncluirCossignatario(String siglaMobil, Long subscritorId, Long pessoaRecebedoraId);
