@@ -2,7 +2,7 @@ package com.br.domain.service.impl;
 
 import java.util.Optional;
 
-import com.br.domain.exception.DocumentoNaoFinalizadoException;
+import com.br.domain.exception.DocumentoFinalizadoException;
 import com.br.domain.exception.MobilNaoExisteException;
 import com.br.domain.exception.MovimentacaoExistenteException;
 import com.br.domain.model.Mobil;
@@ -112,8 +112,8 @@ public class MovementServiceImpl implements MovementService {
 			throw new MovimentacaoExistenteException(movement.getMovementId());
 		}
 
-		if(verificaFinalizacaoDoDocumento(siglaMobil) == null) {
-			throw new DocumentoNaoFinalizadoException(siglaMobil, null);
+		if(verificaFinalizacaoDoDocumento(siglaMobil) != null) {
+			throw new DocumentoFinalizadoException(siglaMobil, null);
 		}
 
 		Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
