@@ -15,7 +15,9 @@ public enum TipoMarca {
 
 	CRIACAO_MARCA(1, "Criação"),
 	ASSINAR_COM_SENHA(2, "Assinar com senha"),
-	INCLUSAO_COSSIGNATARIO(3, "Inclusão de conssignatário");
+	INCLUSAO_COSSIGNATARIO(3, "Inclusão de conssignatário"),
+	FINALIZAR(4, "FINALIZACAO"),
+	TRAMITACAO_DOCUMENTO(5, "Tramitação de documento");
 
 	private final int markId;
 	private final String nome;

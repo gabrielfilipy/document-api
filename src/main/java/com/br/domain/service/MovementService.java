@@ -14,6 +14,7 @@ public interface MovementService {
 	Movement buscarPorCossignatario(String siglaMobil, Long pessoaRecebedoraId);
 	Movement criarMovimentacaoAssinarComSenha(String siglaMobil, Long subscritorId);
 	Movement criarMovimentacaoIncluirCossignatario(String siglaMobil, Long subscritorId, Long pessoaRecebedoraId);
+	Movement criarMovimentacaoTramitarDocumento(String siglaMobil, Long subscritorId, Long pessoaRecebedoraId);
 	Movement findById(Long movimentacaoId);
 	Movement criarMovimentacao(TypeMovement typeMovement, Long subscritorId, Long pessoaRecebedoraId, Mobil mobil);
 	Page<Movement> findAll(Specification<Movement> spec, Pageable pageable);

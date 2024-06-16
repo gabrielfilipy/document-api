@@ -123,6 +123,27 @@ public class MovementServiceImpl implements MovementService {
 
 		return movement;
 	}
+	
+	
+	@Override
+	public Movement criarMovimentacaoTramitarDocumento(String siglaMobil, Long subscritorId, Long pessoaRecebedoraId) {
+		Movement movement = buscarPorCossignatario(siglaMobil, pessoaRecebedoraId);
+		
+		if(movement != null) {
+			throw new MovimentacaoExistenteException(movement.getMovementId());
+		}
+		
+		if (verificaFinalizacaoDoDocumento(siglaMobil) != null) {
+			throw new DocumentoFinalizadoException(siglaMobil, null);
+		}
+		
+		Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
+		mobilService.atribuirMarcaAoMobil(mobil.get(), TipoMarca.TRAMITACAO_DOCUMENTO);
+		movement = criarMovimentacao(TypeMovement.TRAMITAR, subscritorId, pessoaRecebedoraId, mobil.get());
+		mobilService.atualizarSiglaDoMobil(mobil.get());
+		
+		return movement;
+	}
 
 	@Override
 	public Movement findById(Long movimentacaoId) {
