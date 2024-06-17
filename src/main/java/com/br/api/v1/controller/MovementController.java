@@ -58,5 +58,27 @@ public class MovementController {
 		movimentacaoAssinadaModel.setMobilModel(mobilModel);
 		return ResponseEntity.status(HttpStatus.OK).body(movimentacaoAssinadaModel);
 	}
+	
+	@PostMapping("/tramitar-documento/{siglaDocumento}")
+	public ResponseEntity<MovimentacaoAssinadaModel> tramitarDocumento(@PathVariable(name = "siglaDocumento") String siglaDocumento,
+			@RequestBody MovementAssSenhaInput movementAssSenhaInput) {
+		Movement movement = movementService.criarMovimentacaoTramitarDocumento(siglaDocumento, movementAssSenhaInput.getSubscritorId(), movementAssSenhaInput.getPessoaRecebedoraId());
+		Mobil mobil = mobilService.buscarMobil(movement.getMobil().getMobilId());
+		MovimentacaoAssinadaModel movimentacaoAssinadaModel = movementModelMapper.toModelMovAssinada(movement);
+		MobilModel mobilModel = mobilModelMapper.toModel(mobil);
+		movimentacaoAssinadaModel.setMobilModel(mobilModel);
+		return ResponseEntity.status(HttpStatus.OK).body(movimentacaoAssinadaModel);
+	}
+	
+	@PostMapping("/finalizacao-documento/{siglaDocumento}")
+	public ResponseEntity<MovimentacaoAssinadaModel> finalizarDocumento(@PathVariable(name = "siglaDocumento") String siglaDocumento,
+			@RequestBody MovementAssSenhaInput movementAssSenhaInput) {
+		Movement movement = movementService.criarMovimentacaoFinalizacaoDocumento(siglaDocumento, movementAssSenhaInput.getSubscritorId());
+		Mobil mobil = mobilService.buscarMobil(movement.getMobil().getMobilId());
+		MovimentacaoAssinadaModel movimentacaoAssinadaModel = movementModelMapper.toModelMovAssinada(movement);
+		MobilModel mobilModel = mobilModelMapper.toModel(mobil);
+		movimentacaoAssinadaModel.setMobilModel(mobilModel);
+		return ResponseEntity.status(HttpStatus.OK).body(movimentacaoAssinadaModel);
+	}
 
-}
+} 
