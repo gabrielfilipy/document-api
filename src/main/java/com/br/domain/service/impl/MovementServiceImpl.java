@@ -132,7 +132,7 @@ public class MovementServiceImpl implements MovementService {
 			throw new MovimentacaoExistenteException(movement.getMovementId());
 		}
 		
-		if (verificaFinalizacaoDoDocumento(siglaMobil) != null) {
+		if (verificaFinalizacaoDoDocumento(siglaMobil) == null) {
 			throw new DocumentoFinalizadoException(siglaMobil, null);
 		}
 		
