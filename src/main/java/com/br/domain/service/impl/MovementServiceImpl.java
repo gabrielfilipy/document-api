@@ -175,8 +175,8 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	@Override
-	public Page<Movement> buscarMovimentacoesDoMobilFiltro(Long mobilId, Pageable pageable) {
-		return movementRepository.buscarMovimentacoesDoMobilFiltro(mobilId, pageable);
+	public Page<Movement> buscarMovimentacoesDoMobilFiltro(Long mobilId, TypeMovement typeMovement, Pageable pageable) {
+		return movementRepository.buscarMovimentacoesDoMobilFiltro(mobilId, typeMovement, pageable);
 	}
 
 	@Override

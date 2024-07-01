@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.*;
 
 import com.br.api.v1.mapper.MovementModelMapper;
 import com.br.domain.model.Movement;
+import com.br.domain.model.enums.TypeMovement;
 import com.br.domain.service.MovementService;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/v1/movimentacao")
+@RequestMapping("/v1/movimentacao/")
 public class MovementController {
 	
 	@Autowired
@@ -33,8 +34,8 @@ public class MovementController {
 	private MobilModelMapper mobilModelMapper;
 
 	@GetMapping("/filtro")
-	public ResponseEntity<Page<?>> findAll(Long mobilId, @PageableDefault(page = 0, size = 10) Pageable pageable) {
-		return ResponseEntity.status (HttpStatus.OK).body(movementService.buscarMovimentacoesDoMobilFiltro(mobilId, pageable));
+	public ResponseEntity<Page<?>> findAll(Long mobilId, TypeMovement typeMovement, @PageableDefault(page = 0, size = 10) Pageable pageable) {
+		return ResponseEntity.status (HttpStatus.OK).body(movementService.buscarMovimentacoesDoMobilFiltro(mobilId, typeMovement, pageable));
 	}
 
 	@PostMapping("/assinar-com-senha/{siglaDocumento}")
