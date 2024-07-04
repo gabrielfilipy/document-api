@@ -1,17 +1,16 @@
 package com.br.infrastructure.external.service.user.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
 public class User {
 
+	private Long id;
 	private String nome;
 	private Boolean active;
-    private Long id;
 	private String password;
 	private String matricula;
 	private String email;
 	private Long departmentId;
+
 }
