@@ -5,8 +5,9 @@ public enum TypeMovement{
 	CRIACAO(1, "CRIACAO"),
 	ASSINATURA_COM_SENHA(2, "ASSINATURA_COM_SENHA"),
 	INCLUSAO_DE_COSIGNATARIO(3, "INCLUSAO_DE_COSSIGNATARIO"),
-	TRAMITAR(4, "TRAMITAÇÃO"),
-	FINALIZACAO(5, "FINALIZACAO");
+	TRAMITAR(4, "Tramitar para pessoa"),
+	FINALIZACAO(5, "FINALIZACAO"),
+	TRAMITAR_PARA_LOTACAO(6, "Tramitar para lotação"),;
 	
 	private final int id;
 	private final String descr;

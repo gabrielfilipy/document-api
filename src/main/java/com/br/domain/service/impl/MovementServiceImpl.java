@@ -1,5 +1,6 @@
 package com.br.domain.service.impl;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.br.domain.exception.DocumentoFinalizadoException;
@@ -10,6 +11,10 @@ import com.br.domain.model.enums.TipoMarca;
 import com.br.domain.model.enums.TypeMovement;
 import com.br.domain.repository.MobilRepository;
 import com.br.domain.service.MobilService;
+import com.br.infrastructure.external.service.departament.DepartmentFeignClient;
+import com.br.infrastructure.external.service.departament.model.Department;
+import com.br.infrastructure.external.service.user.UserFeignClient;
+import com.br.infrastructure.external.service.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +27,9 @@ import com.br.domain.service.MovementService;
 
 @Service
 public class MovementServiceImpl implements MovementService {
-	
+
+	public static final String MENSAGEM_FOI_TRAMITADO_PARA_DEPARTAMENTO = "documento tramitado para o departamento: ";
+
 	@Autowired
 	MovementRepository movementRepository;
 
@@ -31,6 +38,12 @@ public class MovementServiceImpl implements MovementService {
 
 	@Autowired
 	private MobilService mobilService;
+
+	@Autowired
+	private DepartmentFeignClient departmentFeignClient;
+
+	@Autowired
+	private UserFeignClient userFeignClient;
 
 	@Override
 	public Movement save(Movement movimentacao) {
@@ -138,12 +151,25 @@ public class MovementServiceImpl implements MovementService {
 		
 		Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
 		mobilService.atribuirMarcaAoMobil(mobil.get(), TipoMarca.TRAMITACAO_DOCUMENTO);
-		movement = criarMovimentacao(TypeMovement.TRAMITAR, subscritorId, pessoaRecebedoraId, mobil.get());
+		movement = criarMovimentacao(TypeMovement.TRAMITAR_PARA_LOTACAO, subscritorId, pessoaRecebedoraId, mobil.get());
 		mobilService.atualizarSiglaDoMobil(mobil.get());
 		
 		return movement;
 	}
-	
+
+	@Override
+	public Movement criarMovimentacaoTramitarDocumentoParaLotacao(String siglaMobil, Long subscritorId, Long departmentId) {
+		departmentFeignClient.getDepartment(departmentId);
+		List<User> usuarios =  userFeignClient.buscarTodosUsuarioDeDeterminadoDepartamento(departmentId);
+		Movement movement = null;
+
+		for(User user : usuarios) {
+			movement = criarMovimentacaoTramitarDocumento(siglaMobil,subscritorId, user.getId());
+		}
+
+		return movement;
+	}
+
 	@Override
 	public Movement criarMovimentacaoFinalizacaoDocumento(String siglaMobil, Long subscritorId) {
 		Movement movement = verificaAssinaturaDoSubscritor(siglaMobil, subscritorId);

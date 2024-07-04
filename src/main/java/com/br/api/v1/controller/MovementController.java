@@ -3,6 +3,7 @@ package com.br.api.v1.controller;
 import com.br.api.v1.mapper.MobilModelMapper;
 import com.br.api.v1.model.*;
 import com.br.api.v1.model.input.MovementAssSenhaInput;
+import com.br.api.v1.model.input.MovementTramitarParaDapartmentInput;
 import com.br.domain.model.Mobil;
 import com.br.domain.service.MobilService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,17 @@ public class MovementController {
 	public ResponseEntity<MovimentacaoAssinadaModel> tramitarDocumento(@PathVariable(name = "siglaDocumento") String siglaDocumento,
 			@RequestBody MovementAssSenhaInput movementAssSenhaInput) {
 		Movement movement = movementService.criarMovimentacaoTramitarDocumento(siglaDocumento, movementAssSenhaInput.getSubscritorId(), movementAssSenhaInput.getPessoaRecebedoraId());
+		Mobil mobil = mobilService.buscarMobil(movement.getMobil().getMobilId());
+		MovimentacaoAssinadaModel movimentacaoAssinadaModel = movementModelMapper.toModelMovAssinada(movement);
+		MobilModel mobilModel = mobilModelMapper.toModel(mobil);
+		movimentacaoAssinadaModel.setMobilModel(mobilModel);
+		return ResponseEntity.status(HttpStatus.OK).body(movimentacaoAssinadaModel);
+	}
+
+	@PostMapping("/tramitar-documento-para-departamento/{siglaDocumento}")
+	public ResponseEntity<MovimentacaoAssinadaModel> tramitarDocumentoParaDepartamento(@PathVariable(name = "siglaDocumento") String siglaDocumento,
+																					   @RequestBody MovementTramitarParaDapartmentInput movementAssSenhaInput) {
+		Movement movement = movementService.criarMovimentacaoTramitarDocumentoParaLotacao(siglaDocumento, movementAssSenhaInput.getSubscritorId(), movementAssSenhaInput.getDepartmentId());
 		Mobil mobil = mobilService.buscarMobil(movement.getMobil().getMobilId());
 		MovimentacaoAssinadaModel movimentacaoAssinadaModel = movementModelMapper.toModelMovAssinada(movement);
 		MobilModel mobilModel = mobilModelMapper.toModel(mobil);
