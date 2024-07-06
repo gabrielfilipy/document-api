@@ -4,7 +4,10 @@ import com.br.api.v1.mapper.MobilModelMapper;
 import com.br.api.v1.model.*;
 import com.br.api.v1.model.input.MovementAssSenhaInput;
 import com.br.api.v1.model.input.MovementTramitarParaDapartmentInput;
+import com.br.domain.model.Mark;
 import com.br.domain.model.Mobil;
+import com.br.domain.model.enums.TipoMarca;
+import com.br.domain.service.MarkService;
 import com.br.domain.service.MobilService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -34,6 +37,9 @@ public class MovementController {
 	@Autowired
 	private MobilModelMapper mobilModelMapper;
 
+	@Autowired
+	private MarkService markService;
+	
 	@GetMapping("/filtro")
 	public ResponseEntity<Page<?>> findAll(Long mobilId, TypeMovement typeMovement, @PageableDefault(page = 0, size = 10) Pageable pageable) {
 		return ResponseEntity.status (HttpStatus.OK).body(movementService.buscarMovimentacoesDoMobilFiltro(mobilId, typeMovement, pageable));
