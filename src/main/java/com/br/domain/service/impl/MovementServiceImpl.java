@@ -109,6 +109,11 @@ public class MovementServiceImpl implements MovementService {
 			throw new MovimentacaoExistenteException(movement.getMovementId());
 		}
 
+		Movement verifiacarFinalizacao = verificaFinalizacaoDoDocumento(siglaMobil);
+		if(verifiacarFinalizacao == null){
+			criarMovimentacaoFinalizacaoDocumento(siglaMobil, subscritorId);
+		}
+
 		Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
 		mobilService.atribuirMarcaAoMobil(mobil.get(), TipoMarca.ASSINAR_COM_SENHA);
 		movement = criarMovimentacao(TypeMovement.ASSINATURA_COM_SENHA, subscritorId, null, mobil.get());
@@ -151,7 +156,7 @@ public class MovementServiceImpl implements MovementService {
 		
 		Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
 		mobilService.atribuirMarcaAoMobil(mobil.get(), TipoMarca.TRAMITACAO_DOCUMENTO);
-		movement = criarMovimentacao(TypeMovement.TRAMITAR_PARA_LOTACAO, subscritorId, pessoaRecebedoraId, mobil.get());
+		movement = criarMovimentacao(TypeMovement.TRAMITAR, subscritorId, pessoaRecebedoraId, mobil.get());
 		mobilService.atualizarSiglaDoMobil(mobil.get());
 		
 		return movement;
