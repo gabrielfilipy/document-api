@@ -85,6 +85,23 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	@Override
+	public Movement verificaInclusaoDeCossignatario(String siglaMobil, Long pessoaRecebedoraId) {
+		Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
+
+		if(!mobil.isPresent()) {
+			throw new MobilNaoExisteException("Mobil informado não existe.");
+		}
+
+		for(Movement movement: mobil.get().getMovimentacoes()) {
+			if((movement.getTypeMovement() == TypeMovement.INCLUSAO_DE_COSIGNATARIO) &&
+					(movement.getPessoaRecebedoraId() == pessoaRecebedoraId)) {
+				return movement;
+			}
+		}
+		return null;
+	}
+
+	@Override
 	public Movement buscarPorCossignatario(String siglaMobil, Long pessoaRecebedoraId) {
 		Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
 
@@ -124,7 +141,7 @@ public class MovementServiceImpl implements MovementService {
 
 	@Override
 	public Movement criarMovimentacaoIncluirCossignatario(String siglaMobil, Long subscritorId, Long pessoaRecebedoraId) {
-		Movement movement = buscarPorCossignatario(siglaMobil, pessoaRecebedoraId);
+		Movement movement = verificaInclusaoDeCossignatario(siglaMobil, pessoaRecebedoraId);
 
 		if(movement != null) {
 			throw new MovimentacaoExistenteException(movement.getMovementId());
@@ -219,5 +236,29 @@ public class MovementServiceImpl implements MovementService {
 		movimentacao.setTypeMovement(typeMovement);
 		return movementRepository.save(movimentacao);
 	}
+	
+	 @Override
+    public void verificarEExcluirMovimentacao(String siglaMobil, Long movimentacaoId) {
+        Optional<Movement> movimentacao = movementRepository.findById(movimentacaoId);
 
+        if (movimentacao.isEmpty()) {
+            throw new EntidadeNaoExisteException("Movimentação informada não existe: " + movimentacaoId);
+        }
+
+        Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
+
+        if (!mobil.isPresent()) {
+            throw new MobilNaoExisteException("Mobil informado não existe.");
+        }
+
+        Movement finalizacao = verificaFinalizacaoDoDocumento(siglaMobil);
+
+        if (finalizacao != null) {
+            throw new DocumentoFinalizadoException(siglaMobil, null);
+        }
+
+        if (movimentacao.get().getTypeMovement() == TypeMovement.INCLUSAO_DE_COSIGNATARIO) {
+            movementRepository.delete(movimentacao.get());
+        }
+    }
 }
