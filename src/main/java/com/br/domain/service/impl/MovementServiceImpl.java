@@ -230,19 +230,28 @@ public class MovementServiceImpl implements MovementService {
 
 	@Override
 	public Boolean buscarMovimentacoesDoMobilFiltroBoolean(Long mobilId, TypeMovement typeMovement) {
-
 		if (mobilId == null) {
 			throw new EntidadeNaoExisteException("O mobil informado não existe!" + mobilId);
 		}
+
 		if (typeMovement == null) {
 			throw new EntidadeNaoExisteException("O tipo de movimentação informado não existe!" + typeMovement);
 		}
 
+		try {
+			Page<Movement> pagina = movementRepository.buscarMovimentacoesDoMobilFiltro(mobilId, typeMovement, PageRequest.of(0, 1));
+			if (pagina.hasContent()) {
+				if (pagina.getTotalElements() > 1) {
+					throw new MovimentacaoExistenteException("O documento buscado resultou em mais de um resultado:" + mobilId + "tipo de movimentação: " + typeMovement);
+				}
+					return true;
+			}
+				return false;
+		} catch (MovimentacaoExistenteException e ) {
+			throw new EntidadeNaoExisteException("Erro ao buscar movimentações do móbil " + mobilId + " e tipo de movimentação " + typeMovement + ": Mais de um resultado encontrado na consulta.");
 
-		Page<Movement> pagina = movementRepository.buscarMovimentacoesDoMobilFiltro(mobilId, typeMovement, PageRequest.of(0, 1));
-		Optional<Movement> movement = movementRepository.buscarPorMovimentacoesDoMobil(typeMovement.getId());
+		}
 
-		return pagina.hasContent();
 	}
 
 	@Override

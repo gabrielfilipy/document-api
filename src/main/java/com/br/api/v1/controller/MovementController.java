@@ -105,6 +105,7 @@ public class MovementController {
 		movimentacaoAssinadaModel.setMobilModel(mobilModel);
 		return ResponseEntity.status(HttpStatus.OK).body(movimentacaoAssinadaModel);
 	}
+
 	@DeleteMapping("/excluir-movimentacao/{siglaMobil}/{movimentacaoId}")
     public ResponseEntity<Void> verificarEExcluirMovimentacao(
     		@PathVariable(name = "siglaMobil") String siglaMobil, @PathVariable(name = "movimentacaoId") Long movimentacaoId) {
