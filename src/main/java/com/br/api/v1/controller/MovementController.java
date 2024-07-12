@@ -45,6 +45,12 @@ public class MovementController {
 		return ResponseEntity.status (HttpStatus.OK).body(movementService.buscarMovimentacoesDoMobilFiltro(mobilId, typeMovement, pageable));
 	}
 
+	@GetMapping("/filtro-boolean")
+	public ResponseEntity<Boolean> findByBoolean(@RequestParam Long mobilId, @RequestParam TypeMovement typeMovement) {
+		Boolean existe = movementService.buscarMovimentacoesDoMobilFiltroBoolean(mobilId, typeMovement);
+		return ResponseEntity.status(HttpStatus.OK).body(existe);
+	}
+
 	@PostMapping("/assinar-com-senha/{siglaDocumento}")
 	public ResponseEntity<MovimentacaoAssinadaModel> assinarComSenha(@PathVariable(name = "siglaDocumento") String siglaDocumento,
 			@RequestBody MovementAssSenhaInput movementAssSenhaInput) {
@@ -99,6 +105,7 @@ public class MovementController {
 		movimentacaoAssinadaModel.setMobilModel(mobilModel);
 		return ResponseEntity.status(HttpStatus.OK).body(movimentacaoAssinadaModel);
 	}
+
 	@DeleteMapping("/excluir-movimentacao/{siglaMobil}/{movimentacaoId}")
     public ResponseEntity<Void> verificarEExcluirMovimentacao(
     		@PathVariable(name = "siglaMobil") String siglaMobil, @PathVariable(name = "movimentacaoId") Long movimentacaoId) {

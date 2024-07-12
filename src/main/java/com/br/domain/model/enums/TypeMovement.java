@@ -17,7 +17,7 @@ public enum TypeMovement{
 		this.descr = descr;
 	}
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 }

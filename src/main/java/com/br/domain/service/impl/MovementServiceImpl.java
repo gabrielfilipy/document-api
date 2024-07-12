@@ -17,6 +17,7 @@ import com.br.infrastructure.external.service.user.UserFeignClient;
 import com.br.infrastructure.external.service.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -228,6 +229,32 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	@Override
+	public Boolean buscarMovimentacoesDoMobilFiltroBoolean(Long mobilId, TypeMovement typeMovement) {
+		if (mobilId == null) {
+			throw new EntidadeNaoExisteException("O mobil informado não existe!" + mobilId);
+		}
+
+		if (typeMovement == null) {
+			throw new EntidadeNaoExisteException("O tipo de movimentação informado não existe!" + typeMovement);
+		}
+
+		try {
+			Page<Movement> pagina = movementRepository.buscarMovimentacoesDoMobilFiltro(mobilId, typeMovement, PageRequest.of(0, 1));
+			if (pagina.hasContent()) {
+				if (pagina.getTotalElements() > 1) {
+					throw new MovimentacaoExistenteException("O documento buscado resultou em mais de um resultado:" + mobilId + "tipo de movimentação: " + typeMovement);
+				}
+					return true;
+			}
+				return false;
+		} catch (MovimentacaoExistenteException e ) {
+			throw new EntidadeNaoExisteException("Erro ao buscar movimentações do móbil " + mobilId + " e tipo de movimentação " + typeMovement + ": Mais de um resultado encontrado na consulta.");
+
+		}
+
+	}
+
+	@Override
 	public Movement criarMovimentacao(TypeMovement typeMovement, Long subscritorId, Long pessoaRecebedoraId, Mobil mobil) {
 		Movement movimentacao = new Movement();
 		movimentacao.setSubscritorId(subscritorId);
@@ -236,8 +263,8 @@ public class MovementServiceImpl implements MovementService {
 		movimentacao.setTypeMovement(typeMovement);
 		return movementRepository.save(movimentacao);
 	}
-	
-	 @Override
+
+	@Override
     public void verificarEExcluirMovimentacao(String siglaMobil, Long movimentacaoId) {
         Optional<Movement> movimentacao = movementRepository.findById(movimentacaoId);
 
@@ -262,3 +289,4 @@ public class MovementServiceImpl implements MovementService {
         }
     }
 }
+
