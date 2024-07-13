@@ -12,7 +12,6 @@ import com.br.domain.model.enums.TypeMovement;
 import com.br.domain.repository.MobilRepository;
 import com.br.domain.service.MobilService;
 import com.br.infrastructure.external.service.departament.DepartmentFeignClient;
-import com.br.infrastructure.external.service.departament.model.Department;
 import com.br.infrastructure.external.service.user.UserFeignClient;
 import com.br.infrastructure.external.service.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,6 +98,23 @@ public class MovementServiceImpl implements MovementService {
 				return movement;
 			}
 		}
+		return null;
+	}
+	
+	@Override
+    public Movement verificaTramitacaoDocumento(String siglaMobil) {
+        Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
+
+        if (!mobil.isPresent()) {
+            throw new MobilNaoExisteException("Mobil informado não existe.");
+        }
+
+        // Verifica se há algum tipo de movimentação do tipo TRAMITAR.
+        for (Movement movement : mobil.get().getMovimentacoes()) {
+            if (movement.getTypeMovement() == TypeMovement.TRAMITAR) {
+                return movement;
+            }
+    	}
 		return null;
 	}
 
@@ -207,6 +223,34 @@ public class MovementServiceImpl implements MovementService {
 		mobilService.atualizarSiglaDoMobil(mobil.get());
 
 		return movement;
+	}
+
+	@Override
+	 public Movement criarMovimentacaoExcluirDocumento(String siglaMobil,Long subscritorId) {
+	     Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
+
+	     if (!mobil.isPresent()) {
+	         throw new MobilNaoExisteException("Mobil informado não existe.");
+	     }
+
+	     Movement assinatura = verificaAssinaturaDoSubscritor(siglaMobil, null);
+	     if (assinatura != null) {
+	         throw new MovimentacaoExistenteException(assinatura.getMovementId());
+	     }
+
+	     Movement tramitacao = verificaTramitacaoDocumento(siglaMobil);
+	     if (tramitacao != null) {
+	         throw new MovimentacaoExistenteException(tramitacao.getMovementId());
+	     }
+
+	     Movement finalizacao = verificaFinalizacaoDoDocumento(siglaMobil);
+	     if (finalizacao != null) {
+	         throw new DocumentoFinalizadoException(siglaMobil, null);
+	     }
+
+	     Movement movimentacaoExclusao = criarMovimentacao(TypeMovement.EXCLUSAO_DOCUMENTO, subscritorId, null, mobil.get());
+
+	     return movimentacaoExclusao;
 	}
 
 	@Override

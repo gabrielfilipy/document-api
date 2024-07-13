@@ -7,7 +7,8 @@ public enum TypeMovement{
 	INCLUSAO_DE_COSIGNATARIO(3, "INCLUSAO_DE_COSSIGNATARIO"),
 	TRAMITAR(4, "Tramitar para pessoa"),
 	FINALIZACAO(5, "FINALIZACAO"),
-	TRAMITAR_PARA_LOTACAO(6, "Tramitar para lotação"),;
+	TRAMITAR_PARA_LOTACAO(6, "Tramitar para lotação"),
+	EXCLUSAO_DOCUMENTO(7,"EXCLUSAO_DOCUMENTO");
 	
 	private final int id;
 	private final String descr;

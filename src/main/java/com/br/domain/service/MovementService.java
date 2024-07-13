@@ -11,8 +11,10 @@ public interface MovementService {
 	Movement save(Movement movimentacao);
 	Movement verificaAssinaturaDoSubscritor(String siglaMobil, Long subscritorId);
 	Movement verificaFinalizacaoDoDocumento(String siglaMobil);
+	Movement verificaTramitacaoDocumento(String siglaMobil);
 	Movement verificaInclusaoDeCossignatario(String siglaMobil, Long pessoaRecebedoraId);
 	Movement buscarPorCossignatario(String siglaMobil, Long pessoaRecebedoraId);
+	Movement criarMovimentacaoExcluirDocumento(String siglaMobil, Long subscritorId);
 	Movement criarMovimentacaoAssinarComSenha(String siglaMobil, Long subscritorId);
 	Movement criarMovimentacaoIncluirCossignatario(String siglaMobil, Long subscritorId, Long pessoaRecebedoraId);
 	Movement criarMovimentacaoTramitarDocumento(String siglaMobil, Long subscritorId, Long pessoaRecebedoraId);

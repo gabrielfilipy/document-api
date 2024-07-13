@@ -2,13 +2,9 @@ package com.br.api.v1.controller;
 
 import com.br.api.v1.mapper.MobilModelMapper;
 import com.br.api.v1.model.*;
-import com.br.api.v1.model.input.MovementAssSenhaInput;
-import com.br.api.v1.model.input.MovementTramitarParaDapartmentInput;
-import com.br.domain.model.Mark;
+import com.br.api.v1.model.input.*;
 import com.br.domain.model.Mobil;
-import com.br.domain.model.enums.TipoMarca;
-import com.br.domain.service.MarkService;
-import com.br.domain.service.MobilService;
+import com.br.domain.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.web.PageableDefault;
@@ -111,5 +107,13 @@ public class MovementController {
     		@PathVariable(name = "siglaMobil") String siglaMobil, @PathVariable(name = "movimentacaoId") Long movimentacaoId) {
         movementService.verificarEExcluirMovimentacao(siglaMobil, movimentacaoId);
         return ResponseEntity.noContent().build();
+    }
+	
+    @PostMapping("/excluir-documento/{siglaDocumento}")
+    public ResponseEntity<Movement> criarMovimentacaoExcluirDocumento(
+            @PathVariable(name = "siglaDocumento") String siglaMobil,
+            @RequestBody MovementExclusaoDocumentoInput movementExclusaoDocumentoInput) {
+        Movement movimentacaoExclusao = movementService.criarMovimentacaoExcluirDocumento(siglaMobil, movementExclusaoDocumentoInput.getSubscritorId());
+        return ResponseEntity.ok(movimentacaoExclusao);
     }
 }
