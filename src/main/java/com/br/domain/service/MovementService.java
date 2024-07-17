@@ -20,6 +20,7 @@ public interface MovementService {
 	Movement criarMovimentacaoTramitarDocumento(String siglaMobil, Long subscritorId, Long pessoaRecebedoraId);
 	Movement criarMovimentacaoTramitarDocumentoParaLotacao(String siglaMobil, Long subscritorId, Long departmentId);
 	Movement criarMovimentacaoFinalizacaoDocumento(String siglaMobil, Long subscritorId);
+	Movement criacaoMovimentacaoRecebimentoDocumento(String siglaMobil, Long subscritorId, Long pessoaRecebedoraId);
 	Movement findById(Long movimentacaoId);
 	void verificarEExcluirMovimentacao(String siglaMobil, Long movimentacaoId);
 	Movement criarMovimentacao(TypeMovement typeMovement, Long subscritorId, Long pessoaRecebedoraId, Mobil mobil);

@@ -116,4 +116,16 @@ public class MovementController {
         Movement movimentacaoExclusao = movementService.criarMovimentacaoExcluirDocumento(siglaMobil, movementExclusaoDocumentoInput.getSubscritorId());
         return ResponseEntity.ok(movimentacaoExclusao);
     }
+
+	@PostMapping("/recebimento-documento/{siglaDocumento}")
+	public ResponseEntity<MovimentacaoAssinadaModel> recebimentoDocumento(@PathVariable(name = "siglaDocumento") String siglaDocumento,
+																		  @RequestBody MovementRecebimentoDocumentoInput movementRecDoc) {
+		Movement movement = movementService.criacaoMovimentacaoRecebimentoDocumento(siglaDocumento, movementRecDoc.getPessoaRecebedoraId() ,movementRecDoc.getPessoaRecebedoraId());
+		Mobil mobil = mobilService.buscarMobil(movement.getMobil().getMobilId());
+		MovimentacaoAssinadaModel movimentacaoAssinadaModel = movementModelMapper.toModelMovAssinada(movement);
+		MobilModel mobilModel = mobilModelMapper.toModel(mobil);
+		movimentacaoAssinadaModel.setMobilModel(mobilModel);
+		return ResponseEntity.status(HttpStatus.OK).body(movimentacaoAssinadaModel);
+	}
+
 }

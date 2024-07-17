@@ -226,6 +226,22 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	@Override
+	public Movement criacaoMovimentacaoRecebimentoDocumento(String siglaMobil, Long subscritorId, Long pessoaRecebedoraId) {
+		Movement movement = verificaAssinaturaDoSubscritor(siglaMobil, pessoaRecebedoraId);
+
+		if(movement != null){
+			throw new MovimentacaoExistenteException(movement.getMovementId());
+		}
+
+		Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
+		mobilService.atribuirMarcaAoMobil(mobil.get(), TipoMarca.RECEBIMENTO);
+		movement = criarMovimentacao(TypeMovement.RECEBIMENTO_DOCUMENTO,  subscritorId, pessoaRecebedoraId, mobil.get());
+		mobilService.atualizarSiglaDoMobil(mobil.get());
+
+		return movement;
+	}
+
+	@Override
 	 public Movement criarMovimentacaoExcluirDocumento(String siglaMobil,Long subscritorId) {
 	     Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
 
