@@ -1,6 +1,9 @@
 package com.br.api.v1.controller;
 
 import javax.validation.Valid;
+
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +28,20 @@ public class DocumentController {
 	
 	@Autowired
 	private DocumentModelMapperBack documentModelMapperBack;
+
+	@Autowired
+	private RabbitTemplate rabbitTemplate;
 	
 	@PostMapping("/cadastrar")
 	public ResponseEntity<DocumentModel> cadastrar(@RequestBody @Valid DocumentModelInput documentModelInput) {
         Document document = documentModelMapperBack.toModel(documentModelInput);
         Document savedDocument = documentService.save(document, documentModelInput.getSubscritorId());
         DocumentModel documentModel = documentModelMapper.toModel(savedDocument);
+
+		String routingKey = ("Document-created");
+		Message message = new Message(documentModel.getDocumentId().toString().getBytes());
+		rabbitTemplate.convertAndSend(routingKey, documentModel);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(documentModel);
     }
 

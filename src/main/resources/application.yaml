@@ -6,6 +6,14 @@ spring:
     url: jdbc:mysql://localhost:3306/document-service?createDatabaseIfNotExist=true&serverTimezone=UTC
     username: root
     password:
+  rabbitmq:
+    host: jackal.rmq.cloudamqp.com
+    port: 5672
+    username: ackkmwuh
+    password: 9MosGOU9BHswK_uXJrW39luFDG0lGOOy
+    virtual-host: ackkmwuh
+    ssl:
+      enabled: false
   jpa:
     hibernate:
       #ddl-auto: update
@@ -18,14 +26,3 @@ flyway:
 jackson:
   deserialization:
     fail-on-unknown-properties: false
-
-
-
-
-
-
-
-
-
-
-
