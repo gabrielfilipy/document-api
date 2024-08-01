@@ -39,7 +39,6 @@ public class DocumentController {
         DocumentModel documentModel = documentModelMapper.toModel(savedDocument);
 
 		String routingKey = ("Document-created");
-		Message message = new Message(documentModel.getDocumentId().toString().getBytes());
 		rabbitTemplate.convertAndSend(routingKey, documentModel);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(documentModel);
