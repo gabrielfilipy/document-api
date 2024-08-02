@@ -13,13 +13,14 @@ import org.springframework.data.domain.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class MovementRepositoryImpl {
 
     @PersistenceContext
     private EntityManager manager;
 
-    public Page<Movement> buscarMovimentacoesDoMobilFiltro(Long mobilId, TypeMovement typeMovement, Pageable pageable) throws Exception {
+    public Page<Movement> buscarMovimentacoesDoMobilFiltro(UUID mobilId, TypeMovement typeMovement, Pageable pageable) throws Exception {
         CriteriaBuilder builder = manager.getCriteriaBuilder();
         CriteriaQuery<Movement> criteria = builder.createQuery(Movement.class);
         Root<Movement> root = criteria.from(Movement.class);
@@ -30,7 +31,7 @@ public class MovementRepositoryImpl {
         return new PageImpl<>(query.getResultList(), pageable, totalElementos(mobilId,typeMovement));
     }
 
-    private Predicate[] criarRestricoes(Long mobilId, TypeMovement typeMovement, CriteriaBuilder builder, Root<Movement> root) {
+    private Predicate[] criarRestricoes(UUID mobilId, TypeMovement typeMovement, CriteriaBuilder builder, Root<Movement> root) {
         List<Predicate> predicates = new ArrayList<>();
         Join<Movement, Mobil> mobil = root.join("mobil");
 
@@ -52,7 +53,7 @@ public class MovementRepositoryImpl {
         query.setMaxResults(totalRegistrosPorPagina);
     }
 
-    private Long totalElementos(Long mobilId, TypeMovement typeMovement) {
+    private Long totalElementos(UUID mobilId, TypeMovement typeMovement) {
         CriteriaBuilder builder = manager.getCriteriaBuilder();
         CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
         Root<Movement> root = criteria.from(Movement.class);

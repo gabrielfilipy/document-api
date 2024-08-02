@@ -1,5 +1,7 @@
 package com.br.domain.exception;
 
+import java.util.UUID;
+
 public class MovimentacaoExistenteException extends EntidadeEmUsoException {
 
 	private static final long serialVersionUID = 1L;
@@ -8,7 +10,7 @@ public class MovimentacaoExistenteException extends EntidadeEmUsoException {
 		super(mensagem);
 	}
 
-	public MovimentacaoExistenteException(Long movementId) {
+	public MovimentacaoExistenteException(UUID movementId) {
 		this("A Movimentação informada já existe: " + movementId);
 	}
 

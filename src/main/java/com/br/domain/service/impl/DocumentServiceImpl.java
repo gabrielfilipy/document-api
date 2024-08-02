@@ -17,11 +17,10 @@ import com.br.domain.exception.EntidadeNaoExisteException;
 import com.br.domain.model.*;
 import com.br.domain.model.enums.*;
 import com.br.domain.repository.*;
+import com.br.domain.service.DepartamentoService;
 import com.br.domain.service.DocumentService;
-import com.br.infrastructure.external.service.departament.DepartmentFeignClient;
-import com.br.infrastructure.external.service.departament.model.Department;
-import com.br.infrastructure.external.service.user.UserFeignClient;
-import com.br.infrastructure.external.service.user.model.User;
+import com.br.domain.service.UserService;
+
 
 @Service
 public class DocumentServiceImpl implements DocumentService {
@@ -47,17 +46,17 @@ public class DocumentServiceImpl implements DocumentService {
 	private Generator generator;
 
 	@Autowired
-	private DepartmentFeignClient departmentFeignClient;
+	private DepartamentoService departmentService;
 
 	@Autowired
-	private UserFeignClient userFeignClient;
+	private UserService userService;
 
 	@Autowired
 	private GovernmentAgencyFeignClient governmentAgencyFeignClient;
 
 	@Transactional
 	@Override
-	public Document save(Document document, Long subscritorId) {
+	public Document save(Document document, UUID subscritorId) {
 		// Verificar e obter o Model
 		Model model = modelRepository.findById(document.getModel().getModelId())
 				.orElseThrow(() -> new EntidadeNaoExisteException("Model não encontrado"));
@@ -106,8 +105,8 @@ public class DocumentServiceImpl implements DocumentService {
 		Optional<Movement> ultMovimentacaoAssinada = movementRepository
 				.ultimaMovimentacaoAssinada(document.getMobil().getUltimaMovimentacaoId());
 		String descricaoDocumento = document.getDescricao();
-		User user = userFeignClient.getUserId(document.getMobil().getSubscritorId());
-		Department department = departmentFeignClient.getDepartment(user.getDepartmentId());
+		User user = userService.findById(document.getMobil().getSubscritorId());
+		Departamento department = departmentService.findById(user.getDepartmentId());
 		Orgao orgao = governmentAgencyFeignClient.getOrgaoId(department.getOrgaoId());
 		String dataCriacao = document.getMobil().getDateCreate() + "";
 
@@ -116,8 +115,8 @@ public class DocumentServiceImpl implements DocumentService {
 		descricaoDocumento += "#SecretariaPessoaCriadora=" + department.getNome();
 
 		if(ultMovimentacaoAssinada.isPresent()) {
-			User subscritor = userFeignClient.getUserId(ultMovimentacaoAssinada.get().getSubscritorId());
-			Department departmentSubscritor = departmentFeignClient.getDepartment(subscritor.getDepartmentId());
+			User subscritor = userService.findById(ultMovimentacaoAssinada.get().getSubscritorId());
+			Departamento departmentSubscritor = departmentService.findById(subscritor.getDepartmentId());
 			descricaoDocumento += "#PessoaAssinante=" + subscritor.getNome();
 			descricaoDocumento += "#SecretariaPessoaAssinante=" + departmentSubscritor.getNome();
 			descricaoDocumento += "#DataAssinatura=" + formatarData(ultMovimentacaoAssinada.get().getDataHoraCricao() + "");
@@ -197,7 +196,7 @@ public class DocumentServiceImpl implements DocumentService {
 	}
 
 	@Override
-	public Document findById(Long id) {
+	public Document findById(UUID id) {
 		Optional<Document> document = documentRepository.findById(id);
 		if (document.isEmpty()) {
 			throw new EntidadeNaoExisteException("Documento não existe.");

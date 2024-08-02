@@ -5,6 +5,9 @@ import com.br.domain.model.Document;
 import com.br.domain.model.Mark;
 import com.br.domain.model.Movement;
 import com.br.domain.model.enums.TipoMarca;
+
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,12 +33,12 @@ public class MobilServiceImpl implements MobilService {
 	}
 
 	@Override
-	public Page<Mobil> filtro(Long subscritorId, Long pessoaRecebedoraId, TypeMovement typeMovement, Pageable pageable) {
+	public Page<Mobil> filtro(UUID subscritorId, UUID pessoaRecebedoraId, TypeMovement typeMovement, Pageable pageable) {
 		return mobilRepository.buscarMobilsFiltro(subscritorId, pessoaRecebedoraId, typeMovement, pageable);
 	}
 
 	@Override
-	public Mobil buscarMobil(Long mobilId) {
+	public Mobil buscarMobil(UUID mobilId) {
 		return mobilRepository.findByIdWithMovimentacoes(mobilId)
 				.orElseThrow(() -> new RuntimeException("Mobil informado não existe."));
 	}

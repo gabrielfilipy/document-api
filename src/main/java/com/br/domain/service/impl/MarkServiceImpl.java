@@ -2,6 +2,9 @@ package com.br.domain.service.impl;
 
 import com.br.domain.exception.MarkNaoExisteException;
 import com.br.domain.model.enums.TipoMarca;
+
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.br.domain.model.*;
@@ -31,12 +34,12 @@ public class MarkServiceImpl implements MarkService {
 	}
 
 	@Override
-	public Mark findById(Long markId) {
+	public Mark findById(UUID markId) {
 		return markRepository.findById(markId).orElseThrow(() -> new MarkNaoExisteException(markId));
 	}
 
 	@Override
-	public Mark findByCode(Long code) {
+	public Mark findByCode(UUID code) {
 		return null;
 	}
 

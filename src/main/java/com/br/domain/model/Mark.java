@@ -2,6 +2,8 @@ package com.br.domain.model;
 
 import lombok.*;
 import java.io.Serializable;
+import java.util.UUID;
+
 import javax.persistence.*;
 import com.br.domain.model.enums.TipoMarca;
 
@@ -16,9 +18,9 @@ public class Mark implements Serializable{
 
     @Id
     @EqualsAndHashCode.Include
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @GeneratedValue( strategy = GenerationType.AUTO)
     @Column(name = "mark_id")
-    private Long markId;
+    private UUID markId;
 
     @Column(name = "nome")
     private String nome;

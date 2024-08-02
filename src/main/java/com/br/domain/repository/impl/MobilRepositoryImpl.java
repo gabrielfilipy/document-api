@@ -14,6 +14,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class MobilRepositoryImpl implements MobilRepositoryQuery {
 
@@ -21,7 +22,7 @@ public class MobilRepositoryImpl implements MobilRepositoryQuery {
     private EntityManager manager;
 
     @Override
-    public Page<Mobil> buscarMobilsFiltro(Long subscritorId, Long pessoaRecebedoraId, TypeMovement typeMovement, Pageable pageable) {
+    public Page<Mobil> buscarMobilsFiltro(UUID subscritorId, UUID pessoaRecebedoraId, TypeMovement typeMovement, Pageable pageable) {
         CriteriaBuilder builder = manager.getCriteriaBuilder();
         CriteriaQuery<Mobil> criteria = builder.createQuery(Mobil.class);
         Root<Mobil> root = criteria.from(Mobil.class);
@@ -35,7 +36,7 @@ public class MobilRepositoryImpl implements MobilRepositoryQuery {
     }
 
 
-    private Predicate[] criarRestricoes(Long subscritorId, Long pessoaRecebedoraId, TypeMovement typemovement, CriteriaBuilder builder, Root<Mobil> root) {
+    private Predicate[] criarRestricoes(UUID subscritorId, UUID pessoaRecebedoraId, TypeMovement typemovement, CriteriaBuilder builder, Root<Mobil> root) {
         List<Predicate> predicates = new ArrayList<>();
         
         Join<Mobil, Movement> movement = root.join("movimentacoes");
@@ -64,7 +65,7 @@ public class MobilRepositoryImpl implements MobilRepositoryQuery {
     }
 
 
-    private Long totalElementos(Long subscritorId, Long pessoaRecebedoraId, TypeMovement typeMovement) {
+    private Long totalElementos(UUID subscritorId, UUID pessoaRecebedoraId, TypeMovement typeMovement) {
         CriteriaBuilder builder = manager.getCriteriaBuilder();
         CriteriaQuery<Long> criteria = builder.createQuery(Long.class);
         Root<Mobil> root = criteria.from(Mobil.class);

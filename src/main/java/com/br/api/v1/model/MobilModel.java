@@ -1,16 +1,18 @@
 package com.br.api.v1.model;
 
+import java.util.UUID;
+
 import javax.validation.constraints.*;
 import lombok.Data;
 
 @Data
 public class MobilModel {
 	
-	  private Long mobilId;
-	  private Long ultimaMovimentacaoId;
+	  private UUID mobilId;
+	  private UUID ultimaMovimentacaoId;
 	  private String siglaMobil;
 	  @NotNull
 	  @NotBlank
-	  private Long subscritorId;
+	  private UUID subscritorId;
 	    
 }

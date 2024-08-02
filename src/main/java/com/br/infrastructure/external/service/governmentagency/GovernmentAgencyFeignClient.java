@@ -1,6 +1,9 @@
 package com.br.infrastructure.external.service.governmentagency;
 
 import com.br.infrastructure.external.service.governmentagency.model.Orgao;
+
+import java.util.UUID;
+
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +14,6 @@ public interface GovernmentAgencyFeignClient {
 
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/buscar/{id}")
-	Orgao getOrgaoId(@PathVariable("id") Long id);
+	Orgao getOrgaoId(@PathVariable("id") UUID id);
 
 }

@@ -1,5 +1,7 @@
 package com.br.api.v1.model.input;
 
+import java.util.UUID;
+
 import com.br.api.v1.model.ModelModel;
 import lombok.*;
 
@@ -7,8 +9,8 @@ import lombok.*;
 @Setter
 public class DocumentModelInput {
 
-	private Long documentId;
-	private Long subscritorId;
+	private UUID documentId;
+	private UUID subscritorId;
 	private String descricao;
     private ModelModel model;
 

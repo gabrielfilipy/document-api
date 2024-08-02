@@ -1,5 +1,7 @@
 package com.br.domain.exception;
 
+import java.util.UUID;
+
 public class MobilNaoExisteException extends EntidadeNaoExisteException{
 	
 	private static final long serialVersionUID = 1L;
@@ -8,7 +10,7 @@ public class MobilNaoExisteException extends EntidadeNaoExisteException{
 		super(mensagem);
 	}
 	
-	public MobilNaoExisteException(Long mobilId, String siglaMobil) {
+	public MobilNaoExisteException(UUID mobilId, String siglaMobil) {
 		this("O documento informado " + siglaMobil + " não existe");
 	}
 
