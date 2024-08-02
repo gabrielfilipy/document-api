@@ -1,9 +1,7 @@
 CREATE TABLE tbl_mark (
-    mark_id bigint NOT NULL AUTO_INCREMENT,
+    mark_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     code INT NOT NULL,
     desc_detalhada TEXT,
-    nome varchar(255),
-    tipo_marca int,
-
-    PRIMARY KEY (mark_id)
+    nome VARCHAR(255),
+    tipo_marca INT
 );

@@ -1,11 +1,9 @@
 CREATE TABLE tbl_mobil (
-    mobil_id bigint NOT NULL AUTO_INCREMENT,
-    subscritor_id bigint NOT NULL,
-    date_create datetime NOT NULL,
+    mobil_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    subscritor_id UUID NOT NULL,
+    date_create TIMESTAMPTZ NOT NULL,
     desc_detalhada TEXT,
-    sigla_mobil varchar(20),
-    ult_movimentacao_id int UNIQUE,
-    documento_document_id int UNIQUE,
-
-    PRIMARY KEY (mobil_id)
+    sigla_mobil VARCHAR(20),
+    ult_movimentacao_id UUID UNIQUE,
+    documento_document_id UUID UNIQUE
 );

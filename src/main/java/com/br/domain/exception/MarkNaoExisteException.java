@@ -1,5 +1,7 @@
 package com.br.domain.exception;
 
+import java.util.UUID;
+
 public class MarkNaoExisteException extends EntidadeNaoExisteException {
 
 	private static final long serialVersionUID = 1L;
@@ -8,7 +10,7 @@ public class MarkNaoExisteException extends EntidadeNaoExisteException {
 		super(mensagem);
 	}
 
-	public MarkNaoExisteException(Long markId) {
+	public MarkNaoExisteException(UUID markId) {
 		this("A Marca informada não foi encontrada: " + markId);
 	}
 

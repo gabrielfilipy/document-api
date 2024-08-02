@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -22,15 +23,15 @@ public class Movement implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @GeneratedValue( strategy = GenerationType.AUTO)
     @EqualsAndHashCode.Include
-    private Long movementId;
+    private UUID movementId;
 
     @Column(name = "pessoa_recebedora_id")
-    private Long pessoaRecebedoraId;
+    private UUID pessoaRecebedoraId;
 
     @Column(name = "subscritor_id")
-    private Long subscritorId;
+    private UUID subscritorId;
 
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss'Z'")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")

@@ -5,16 +5,17 @@ import lombok.*;
 
 import javax.persistence.Column;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @Getter
 @Setter
 public class MovimentacaoAssinadaModel {
 
-    private Long movementId;
+    private UUID movementId;
     private TypeMovement typeMovement;
     private OffsetDateTime dataHoraCricao;
-    private Long pessoaRecebedoraId;
-    private Long subscritorId;
+    private UUID pessoaRecebedoraId;
+    private UUID subscritorId;
     private MobilModel mobilModel;
 
 }

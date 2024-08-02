@@ -1,12 +1,8 @@
 CREATE TABLE tbl_document (
-    document_id bigint NOT NULL AUTO_INCREMENT,
+    document_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     descricao TEXT,
     file TEXT,
-    mobil_mobil_id int UNIQUE,
-    model_id bigint NOT NULL,
-
-    PRIMARY KEY (document_id)
+    mobil_mobil_id UUID UNIQUE,
+    model_id UUID NOT NULL,
+    FOREIGN KEY (model_id) REFERENCES tbl_model(model_id)
 );
-
-alter table tbl_document add constraint fk_model_documento
-foreign key (model_id) references tbl_model (model_id);

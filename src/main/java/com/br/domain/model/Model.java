@@ -6,6 +6,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.util.UUID;
+
 import javax.persistence.*;
 
 @Getter
@@ -17,8 +19,8 @@ public class Model implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
-    private Long modelId;
+    @GeneratedValue( strategy = GenerationType.AUTO)
+    private UUID modelId;
 
     @Column(name = "sigla")
     private String siglaModel;

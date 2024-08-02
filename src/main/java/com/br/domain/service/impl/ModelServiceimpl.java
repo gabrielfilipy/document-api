@@ -24,7 +24,7 @@ public class ModelServiceimpl implements ModelService{
 	}
 
 	@Override
-	public Model desactiveModel(Long id) {
+	public Model desactiveModel(UUID id) {
 		Model model = modelRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Modelo não encontrado."));
 		model.setDataHoraFinalizacao(OffsetDateTime.now(ZoneOffset.UTC));
@@ -32,7 +32,7 @@ public class ModelServiceimpl implements ModelService{
 	}
 
 	@Override
-	public Model activeModel(Long id, Boolean ativo) {
+	public Model activeModel(UUID id, Boolean ativo) {
 		Model model =  modelRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("Modelo não encontrado."));
 		model.setDataHoraFinalizacao(OffsetDateTime.now(ZoneOffset.UTC));
@@ -45,7 +45,7 @@ public class ModelServiceimpl implements ModelService{
 	}
 
 	@Override
-	public Model findById(Long id) {
+	public Model findById(UUID id) {
 		Optional<Model> model = modelRepository.findById(id);
 		if(model.isEmpty()) {
 			throw new EntidadeNaoExisteException("Modelo informado não existe: " + id);

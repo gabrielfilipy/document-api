@@ -6,6 +6,7 @@ import javax.validation.constraints.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -16,8 +17,8 @@ public class Document implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue( strategy = GenerationType.IDENTITY)
-	private Long documentId;
+	@GeneratedValue( strategy = GenerationType.AUTO)
+	private UUID documentId;
 	
 	@NotNull
 	@NotBlank

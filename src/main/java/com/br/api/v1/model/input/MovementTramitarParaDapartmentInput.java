@@ -1,5 +1,7 @@
 package com.br.api.v1.model.input;
 
+import java.util.UUID;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class MovementTramitarParaDapartmentInput {
 
-    private Long subscritorId;
-    private Long departmentId;
+    private UUID subscritorId;
+    private UUID departmentId;
 
 }

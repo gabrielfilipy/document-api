@@ -5,6 +5,9 @@ import com.br.api.v1.model.*;
 import com.br.api.v1.model.input.*;
 import com.br.domain.model.Mobil;
 import com.br.domain.service.*;
+
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.web.PageableDefault;
@@ -37,12 +40,19 @@ public class MovementController {
 	private MarkService markService;
 	
 	@GetMapping("/filtro")
-	public ResponseEntity<Page<?>> findAll(Long mobilId, TypeMovement typeMovement, @PageableDefault(page = 0, size = 10) Pageable pageable) {
-		return ResponseEntity.status (HttpStatus.OK).body(movementService.buscarMovimentacoesDoMobilFiltro(mobilId, typeMovement, pageable));
+	public ResponseEntity<Page<?>> findAll(
+	        @RequestParam(value = "mobilId", required = false) UUID mobilId,
+	        @RequestParam(value = "typeMovement", required = false) TypeMovement typeMovement,
+	        @PageableDefault(page = 0, size = 10) Pageable pageable) {
+
+	    // Chama o serviço de busca com os parâmetros fornecidos
+	    Page<?> result = movementService.buscarMovimentacoesDoMobilFiltro(mobilId, typeMovement, pageable);
+	    
+	    return ResponseEntity.status(HttpStatus.OK).body(result);
 	}
 
 	@GetMapping("/filtro-boolean")
-	public ResponseEntity<Boolean> findByBoolean(@RequestParam Long mobilId, @RequestParam TypeMovement typeMovement) {
+	public ResponseEntity<Boolean> findByBoolean(@RequestParam UUID mobilId, @RequestParam TypeMovement typeMovement) {
 		Boolean existe = movementService.buscarMovimentacoesDoMobilFiltroBoolean(mobilId, typeMovement);
 		return ResponseEntity.status(HttpStatus.OK).body(existe);
 	}
@@ -104,7 +114,7 @@ public class MovementController {
 
 	@DeleteMapping("/excluir-movimentacao/{siglaMobil}/{movimentacaoId}")
     public ResponseEntity<Void> verificarEExcluirMovimentacao(
-    		@PathVariable(name = "siglaMobil") String siglaMobil, @PathVariable(name = "movimentacaoId") Long movimentacaoId) {
+    		@PathVariable(name = "siglaMobil") String siglaMobil, @PathVariable(name = "movimentacaoId") UUID movimentacaoId) {
         movementService.verificarEExcluirMovimentacao(siglaMobil, movimentacaoId);
         return ResponseEntity.noContent().build();
     }

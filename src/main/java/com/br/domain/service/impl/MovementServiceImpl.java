@@ -2,18 +2,18 @@ package com.br.domain.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import com.br.domain.exception.DocumentoFinalizadoException;
 import com.br.domain.exception.MobilNaoExisteException;
 import com.br.domain.exception.MovimentacaoExistenteException;
+import com.br.domain.exception.SubscritorNaoPodeSerCossignatarioException;
 import com.br.domain.model.Mobil;
 import com.br.domain.model.enums.TipoMarca;
 import com.br.domain.model.enums.TypeMovement;
 import com.br.domain.repository.MobilRepository;
+import com.br.domain.service.DepartamentoService;
 import com.br.domain.service.MobilService;
-import com.br.infrastructure.external.service.departament.DepartmentFeignClient;
-import com.br.infrastructure.external.service.user.UserFeignClient;
-import com.br.infrastructure.external.service.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,8 +22,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import com.br.domain.exception.EntidadeNaoExisteException;
 import com.br.domain.model.Movement;
+import com.br.domain.model.User;
 import com.br.domain.repository.MovementRepository;
 import com.br.domain.service.MovementService;
+import com.br.domain.service.UserService;
 
 @Service
 public class MovementServiceImpl implements MovementService {
@@ -40,10 +42,10 @@ public class MovementServiceImpl implements MovementService {
 	private MobilService mobilService;
 
 	@Autowired
-	private DepartmentFeignClient departmentFeignClient;
+	private DepartamentoService departmentService;
 
 	@Autowired
-	private UserFeignClient userFeignClient;
+	private UserService userService;
 
 	@Override
 	public Movement save(Movement movimentacao) {
@@ -51,7 +53,7 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	@Override
-	public Movement verificaAssinaturaDoSubscritor(String siglaMobil, Long subscritorId) {
+	public Movement verificaAssinaturaDoSubscritor(String siglaMobil, UUID subscritorId) {
 		Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
 
 		if(!mobil.isPresent()) {
@@ -85,7 +87,7 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	@Override
-	public Movement verificaInclusaoDeCossignatario(String siglaMobil, Long pessoaRecebedoraId) {
+	public Movement verificaInclusaoDeCossignatario(String siglaMobil, UUID pessoaRecebedoraId) {
 		Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
 
 		if(!mobil.isPresent()) {
@@ -119,7 +121,7 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	@Override
-	public Movement buscarPorCossignatario(String siglaMobil, Long pessoaRecebedoraId) {
+	public Movement buscarPorCossignatario(String siglaMobil, UUID pessoaRecebedoraId) {
 		Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
 
 		if(!mobil.isPresent()) {
@@ -136,7 +138,7 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	@Override
-	public Movement criarMovimentacaoAssinarComSenha(String siglaMobil, Long subscritorId) {
+	public Movement criarMovimentacaoAssinarComSenha(String siglaMobil, UUID subscritorId) {
 		Movement movement = verificaAssinaturaDoSubscritor(siglaMobil, subscritorId);
 
 		if(movement != null) {
@@ -157,27 +159,45 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	@Override
-	public Movement criarMovimentacaoIncluirCossignatario(String siglaMobil, Long subscritorId, Long pessoaRecebedoraId) {
-		Movement movement = verificaInclusaoDeCossignatario(siglaMobil, pessoaRecebedoraId);
+	public Movement criarMovimentacaoIncluirCossignatario(String siglaMobil, UUID subscritorId, UUID pessoaRecebedoraId) {
+		
+	    if (subscritorId.equals(subscritorId)) {
+	        throw new SubscritorNaoPodeSerCossignatarioException("O subscritor não pode se incluir como co-signatário.");
+	    }
+	    Movement movement = verificaInclusaoDeCossignatario(siglaMobil, pessoaRecebedoraId);
 
-		if(movement != null) {
-			throw new MovimentacaoExistenteException(movement.getMovementId());
-		}
+	    if (movement != null) {
+	        throw new MovimentacaoExistenteException(movement.getMovementId());
+	    }
 
-		if(verificaFinalizacaoDoDocumento(siglaMobil) != null) {
-			throw new DocumentoFinalizadoException(siglaMobil, null);
-		}
+	    if (verificaFinalizacaoDoDocumento(siglaMobil) != null) {
+	        throw new DocumentoFinalizadoException(siglaMobil, null);
+	    }
 
-		Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
-		mobilService.atribuirMarcaAoMobil(mobil.get(), TipoMarca.INCLUSAO_COSSIGNATARIO);
-		movement = criarMovimentacao(TypeMovement.INCLUSAO_DE_COSIGNATARIO, subscritorId, pessoaRecebedoraId, mobil.get());
-		mobilService.atualizarSiglaDoMobil(mobil.get());
+	    Optional<Mobil> mobilOptional = mobilRepository.findByMobilPorSigla(siglaMobil);
+	    if (!mobilOptional.isPresent()) {
+	        throw new MobilNaoExisteException(siglaMobil);
+	    }
 
-		return movement;
+	    Mobil mobil = mobilOptional.get();
+
+	    // Verificar se a marca INCLUSAO_COSSIGNATARIO já existe
+	    boolean hasInclusaoCossignatario = mobil.getMarcas().stream()
+	            .anyMatch(marca -> marca.getTipoMarca() == TipoMarca.INCLUSAO_COSSIGNATARIO);
+
+	    if (!hasInclusaoCossignatario) {
+	        mobilService.atribuirMarcaAoMobil(mobil, TipoMarca.INCLUSAO_COSSIGNATARIO);
+	    }
+
+	    movement = criarMovimentacao(TypeMovement.INCLUSAO_DE_COSIGNATARIO, subscritorId, pessoaRecebedoraId, mobil);
+	    mobilService.atualizarSiglaDoMobil(mobil);
+
+	    return movement;
 	}
+
 	
 	@Override
-	public Movement criarMovimentacaoTramitarDocumento(String siglaMobil, Long subscritorId, Long pessoaRecebedoraId) {
+	public Movement criarMovimentacaoTramitarDocumento(String siglaMobil, UUID subscritorId, UUID pessoaRecebedoraId) {
 		Movement movement = buscarPorCossignatario(siglaMobil, pessoaRecebedoraId);
 		
 		if(movement != null) {
@@ -197,20 +217,20 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	@Override
-	public Movement criarMovimentacaoTramitarDocumentoParaLotacao(String siglaMobil, Long subscritorId, Long departmentId) {
-		departmentFeignClient.getDepartment(departmentId);
-		List<User> usuarios =  userFeignClient.buscarTodosUsuarioDeDeterminadoDepartamento(departmentId);
+	public Movement criarMovimentacaoTramitarDocumentoParaLotacao(String siglaMobil, UUID subscritorId, UUID departmentId) {
+		departmentService.findById(departmentId);
+		List<User> usuarios =  userService.buscarUsuariosDoDepartamento(departmentId);
 		Movement movement = null;
 
 		for(User user : usuarios) {
-			movement = criarMovimentacaoTramitarDocumento(siglaMobil,subscritorId, user.getId());
+			movement = criarMovimentacaoTramitarDocumento(siglaMobil,subscritorId, user.getUserId());
 		}
 
 		return movement;
 	}
 
 	@Override
-	public Movement criarMovimentacaoFinalizacaoDocumento(String siglaMobil, Long subscritorId) {
+	public Movement criarMovimentacaoFinalizacaoDocumento(String siglaMobil, UUID subscritorId) {
 		Movement movement = verificaAssinaturaDoSubscritor(siglaMobil, subscritorId);
 
 		if(movement != null) {
@@ -226,7 +246,7 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	@Override
-	public Movement criacaoMovimentacaoRecebimentoDocumento(String siglaMobil, Long subscritorId, Long pessoaRecebedoraId) {
+	public Movement criacaoMovimentacaoRecebimentoDocumento(String siglaMobil, UUID subscritorId, UUID pessoaRecebedoraId) {
 		Movement movement = verificaAssinaturaDoSubscritor(siglaMobil, pessoaRecebedoraId);
 
 		if(movement != null){
@@ -242,7 +262,7 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	@Override
-	 public Movement criarMovimentacaoExcluirDocumento(String siglaMobil,Long subscritorId) {
+	 public Movement criarMovimentacaoExcluirDocumento(String siglaMobil,UUID subscritorId) {
 	     Optional<Mobil> mobil = mobilRepository.findByMobilPorSigla(siglaMobil);
 
 	     if (!mobil.isPresent()) {
@@ -270,7 +290,7 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	@Override
-	public Movement findById(Long movimentacaoId) {
+	public Movement findById(UUID movimentacaoId) {
 		Optional<Movement> movimentacao = movementRepository.findById(movimentacaoId);
 		if(movimentacao.isEmpty()) {
 			throw new EntidadeNaoExisteException("Movimentação informada não existe: " + movimentacaoId);
@@ -284,12 +304,12 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	@Override
-	public Page<Movement> buscarMovimentacoesDoMobilFiltro(Long mobilId, TypeMovement typeMovement, Pageable pageable) {
+	public Page<Movement> buscarMovimentacoesDoMobilFiltro(UUID mobilId, TypeMovement typeMovement, Pageable pageable) {
 		return movementRepository.buscarMovimentacoesDoMobilFiltro(mobilId, typeMovement, pageable);
 	}
 
 	@Override
-	public Boolean buscarMovimentacoesDoMobilFiltroBoolean(Long mobilId, TypeMovement typeMovement) {
+	public Boolean buscarMovimentacoesDoMobilFiltroBoolean(UUID mobilId, TypeMovement typeMovement) {
 		if (mobilId == null) {
 			throw new EntidadeNaoExisteException("O mobil informado não existe!" + mobilId);
 		}
@@ -315,7 +335,7 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	@Override
-	public Movement criarMovimentacao(TypeMovement typeMovement, Long subscritorId, Long pessoaRecebedoraId, Mobil mobil) {
+	public Movement criarMovimentacao(TypeMovement typeMovement, UUID subscritorId, UUID pessoaRecebedoraId, Mobil mobil) {
 		Movement movimentacao = new Movement();
 		movimentacao.setSubscritorId(subscritorId);
 		movimentacao.setPessoaRecebedoraId(pessoaRecebedoraId);
@@ -325,7 +345,7 @@ public class MovementServiceImpl implements MovementService {
 	}
 
 	@Override
-    public void verificarEExcluirMovimentacao(String siglaMobil, Long movimentacaoId) {
+    public void verificarEExcluirMovimentacao(String siglaMobil, UUID movimentacaoId) {
         Optional<Movement> movimentacao = movementRepository.findById(movimentacaoId);
 
         if (movimentacao.isEmpty()) {

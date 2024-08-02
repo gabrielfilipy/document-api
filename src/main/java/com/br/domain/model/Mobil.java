@@ -23,13 +23,13 @@ public class Mobil implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @GeneratedValue( strategy = GenerationType.AUTO)
     @EqualsAndHashCode.Include
     @Column(name = "mobil_id")
-	private Long mobilId;
+	private UUID mobilId;
 
     @Column(name = "subscritor_id")
-	private Long subscritorId;
+	private UUID subscritorId;
 	
     @Column(name = "sigla_mobil")
     private String siglaMobil;
@@ -52,7 +52,7 @@ public class Mobil implements Serializable{
     private List<Movement> movimentacoes = new ArrayList<>();
 
     @Column(name = "ult_movimentacao_id")
-    private Long ultimaMovimentacaoId;
+    private UUID ultimaMovimentacaoId;
 
     @OneToOne
     private Document documento;
