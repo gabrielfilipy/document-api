@@ -7,6 +7,15 @@ spring:
     username: postgres
     password: admin
     driver-class-name: org.postgresql.Driver
+
+  rabbitmq:
+    host: chimpanzee.rmq.cloudamqp.com
+    port: 5672
+    username: guiipcih
+    password: rmi0aARlI9gqXyW1t0sZ6nmyS0jXF50M
+    virtual-host: guiipcih
+    ssl:
+      enabled: false
   jpa:
     hibernate:
       #ddl-auto: update
